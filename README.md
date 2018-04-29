@@ -31,9 +31,25 @@ Methods
 -------
 ### addPosition(buy, pair, exchange, initPrice, amount, note = "", callback)
 
+#### Add a new position to your portfolio.
+
+**buy** (Boolean) : `TRUE` is buy, `FALSE` is sell
+
+**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+
+**exchange** (String) : Name of the exchange where the order is executed (see `getExchanges` to get the list of available exchanges for a specific token pair)
+
+**initPrice** (Number) : Price of token pair when the order is executed (see `getPrice` to get the latest price for a specific token pair on a specific exchange)
+
+**amount** (Number) : Quantity of order
+
+**note** (String) : Note to add to the position in Blockfolio
+
+**callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fin, and `result` should contain `success` (otherwise, it will be the response body)
+
 ### watchCoin(pair, exchange, callback)
 
-### getPrice(pair, exchange, callback) {
+### getPrice(pair, exchange, callback)
 
 ### getExchanges(pair, callback)
 
