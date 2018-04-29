@@ -1,6 +1,6 @@
 {
-  "name": "blockfolio-api",
-  "version": "0.0.1",
+  "name": "blockfolio-api-client",
+  "version": "0.0.2",
   "description": "JavaScript module to access Blockfolio API",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bob6664569/blockfolio-api.git"
+    "url": "git+https://github.com/bob6664569/blockfolio-api-client.git"
   },
   "keywords": [
     "blockfolio",
@@ -24,9 +24,9 @@
   "author": "Johan Massin <johan@trilogik.net> (https://trilogik.net)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bob6664569/blockfolio-api/issues"
+    "url": "https://github.com/bob6664569/blockfolio-api-client/issues"
   },
-  "homepage": "https://github.com/bob6664569/blockfolio-api#readme",
+  "homepage": "https://github.com/bob6664569/blockfolio-api-client#readme",
   "devDependencies": {
     "bithound": "^1.7.0",
     "chai": "^4.1.2",

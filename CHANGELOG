@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased]
+
+## [0.0.3] - 2018-04-29
+### Added
+- getPrice, getExchanges
+
+## [0.0.2] - 2018-04-29
+### Added
+- addPosition, getPositions, watchCoin, removeCoin
+- New tests
+### Changed
+- Renamed to blockfolio-api-client
+### Removed
+- Useless _post (everything is called with GETs...)
+
 ## [0.0.1] - 2018-04-29
 ### Added
 - Base package & module struct
