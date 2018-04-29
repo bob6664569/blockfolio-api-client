@@ -100,7 +100,7 @@
          * @param note Optional note
          * @param callback
          */
-        addPosition(buy, pair, exchange, initPrice, amount, note = "", callback) {
+        addPosition(buy, pair, exchange, initPrice, amount, note, callback) {
             if (!this._checkToken()) return callback(new Error("A valid CLIENT_TOKEN should be provided"));
 
             // Prepare params

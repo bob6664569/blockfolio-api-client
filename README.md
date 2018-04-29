@@ -29,7 +29,7 @@ Blockfolio.getPositions((err, positions) => {
 
 Methods
 -------
-### addPosition(buy, pair, exchange, initPrice, amount, note = "", callback)
+### addPosition(buy, pair, exchange, initPrice, amount, note, callback)
 
 #### Add a new position to your portfolio.
 
@@ -45,7 +45,7 @@ Methods
 
 **note** (String) : Note to add to the position in Blockfolio
 
-**callback(err, result)** (Callback) : Function called when the response is received, err` should be null if everything was fin, and `result` should contain `success` (otherwise, it will be the response body)
+**callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body)
 
 #### Example
 ```javascript
@@ -57,6 +57,23 @@ Blockfolio.addPosition(true, "XMR/BTC", "bittrex", 0.015, 42, "I really like Mon
 ```
 
 ### watchCoin(pair, exchange, callback)
+
+#### Add a coin to your portfolio without adding any position
+
+**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+
+**exchange** (String) : Name of the exchange where the order is executed (see `getExchanges` to get the list of available exchanges for a specific token pair)
+
+**callback(err, result)** (Callback) : Function called when the response is received, err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body)
+
+#### Example
+```javascript
+Blockfolio.watchCoin("XMR/BTC", "bittrex", (err, res) => {
+    if (err) throw(err);
+
+    // XMR from Bittrex added to your portfolio !
+});
+```
 
 ### getPrice(pair, exchange, callback)
 
