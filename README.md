@@ -2,12 +2,12 @@
 
 [![Donate with Bitcoin](https://en.cryptobadges.io/badge/micro/1LhMTZWBnRq6NTwWegYKdMUAiH9LrWEvyd)](https://en.cryptobadges.io/donate/1LhMTZWBnRq6NTwWegYKdMUAiH9LrWEvyd) [![bitHound Overall Score](https://www.bithound.io/github/bob6664569/blockfolio-api-client/badges/score.svg)](https://www.bithound.io/github/bob6664569/blockfolio-api-client) [![bitHound Dependencies](https://www.bithound.io/github/bob6664569/blockfolio-api-client/badges/dependencies.svg)](https://www.bithound.io/github/bob6664569/blockfolio-api-client/master/dependencies/npm) [![bitHound Code](https://www.bithound.io/github/bob6664569/blockfolio-api-client/badges/code.svg)](https://www.bithound.io/github/bob6664569/blockfolio-api-client)
 
-Non-official Node.JS API Client for Blockfolio
+#### Non-official Node.JS API Client for Blockfolio
 
 Install
 --
 ```sh
-npm install blockfolio-api --save
+npm install blockfolio-api-client --save
 ```
 
 Usage
@@ -64,7 +64,7 @@ Blockfolio.addPosition(true, "XMR/BTC", "bittrex", 0.015, 42, "I really like Mon
 
 **exchange** (String) : Name of the exchange where the order is executed (see `getExchanges` to get the list of available exchanges for a specific token pair)
 
-**callback(err, result)** (Callback) : Function called when the response is received, err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body)
+**callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body)
 
 #### Example
 ```javascript
@@ -77,7 +77,39 @@ Blockfolio.watchCoin("XMR/BTC", "bittrex", (err, res) => {
 
 ### getPrice(pair, exchange, callback)
 
+#### Retrieve the last ticker price for specific token pair on specific exchange
+
+**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+
+**exchange** (String) : Name of the exchange where the order is executed (see `getExchanges` to get the list of available exchanges for a specific token pair)
+
+**callback(err, price)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `price` should return the last price (otherwise, it will be the response body)
+
+#### Example
+```javascript
+Blockfolio.getPrice("XMR/BTC", "bittrex", (err, price) => {
+    if (err) throw(err);
+
+    console.log("Current price for XMR on Bittrex : " + price + "btc");
+});
+```
+
 ### getExchanges(pair, callback)
+
+#### Returns a list of exchanges where the specified token pair is available
+
+**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+
+**callback(err, exchanges)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `exchanges` should contain an array with the list of exchanges (otherwise, it will be the response body)
+
+#### Example
+```javascript
+Blockfolio.getExchanges("XMR/BTC", (err, exchanges) => {
+    if (err) throw(err);
+
+    console.log("Top exchange for XMR/BTC is : " + exchanges[0]);
+});
+```
 
 ### getPositions(callback)
 
