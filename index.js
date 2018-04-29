@@ -51,7 +51,7 @@
 
     const request = require('request');
 
-    const PLATFORM = "android_rn";
+    const PLATFORM = "APIClient";
     const API_URL =  "https://api-v0.blockfolio.com/rest/";
     const MAGIC_TOKEN = "edtopjhgn2345piuty89whqejfiobh89-2q453"; // Common token to pseudo-authenticate API Client
     const LOCALE = "en-US";

@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+## [0.0.4] - 2018-04-30
+### Added
+- Some doc in README
+
+### Changed
+- BTC Badge for donations
+- Restore APIClient user-agent
+- Add correct extension for this file
+
 ## [0.0.3] - 2018-04-29
 ### Added
 - getPrice, getExchanges
