@@ -1,0 +1,40 @@
+{
+  "name": "blockfolio-api",
+  "version": "0.9.0",
+  "description": "JavaScript module to access Blockfolio API",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=development ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bob6664569/blockfolio-api.git"
+  },
+  "keywords": [
+    "blockfolio",
+    "api",
+    "blockfolio-api",
+    "cryptocurrencies",
+    "btc",
+    "bitcoin",
+    "portfolio",
+    "assets",
+    "cryptoassets"
+  ],
+  "author": "Johan Massin <johan@trilogik.net> (https://trilogik.net)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bob6664569/blockfolio-api/issues"
+  },
+  "homepage": "https://github.com/bob6664569/blockfolio-api#readme",
+  "devDependencies": {
+    "bithound": "^1.7.0",
+    "chai": "^4.1.2",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.1.1"
+  },
+  "dependencies": {
+    "request": "^2.85.0"
+  },
+  "readmeFilename": "README.md"
+}
