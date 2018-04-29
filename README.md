@@ -49,10 +49,10 @@ Methods
 
 #### Example
 ```javascript
-Blockfolio.addPosition(true, "XMR/BTC", 0.015, 42, "I really like Monero !", (err, res) => {
+Blockfolio.addPosition(true, "XMR/BTC", "bittrex", 0.015, 42, "I really like Monero !", (err, res) => {
     if (err) throw(err);
 
-    // 42 XMR added to your portfolio at the price of 0.015BTC each !
+    // 42 XMR from Bittrex added to your portfolio at the price of 0.015BTC each !
 });
 ```
 
