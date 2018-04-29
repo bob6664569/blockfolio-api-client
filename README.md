@@ -45,7 +45,16 @@ Methods
 
 **note** (String) : Note to add to the position in Blockfolio
 
-**callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fin, and `result` should contain `success` (otherwise, it will be the response body)
+**callback(err, result)** (Callback) : Function called when the response is received, err` should be null if everything was fin, and `result` should contain `success` (otherwise, it will be the response body)
+
+#### Example
+```javascript
+Blockfolio.addPosition(true, "XMR/BTC", 0.015, 42, "I really like Monero !", (err, res) => {
+    if (err) throw(err);
+
+    // 42 XMR added to your portfolio at the price of 0.015BTC each !
+});
+```
 
 ### watchCoin(pair, exchange, callback)
 
