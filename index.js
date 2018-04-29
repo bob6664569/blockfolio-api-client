@@ -52,7 +52,61 @@
     const request = require('request');
 
     const API_URL =  "https://api-v0.blockfolio.com/rest/";
-    const magic = "edtopjhgn2345piuty89whqejfiobh89-2q453"; // Common token to pseudo-authenticate API Client
+    const MAGIC_TOKEN = "edtopjhgn2345piuty89whqejfiobh89-2q453"; // Common token to pseudo-authenticate API Client
 
+    class Blockfolio {
+
+        constructor(clientToken, fiatCurrency = "usd") {
+            this.CLIENT_TOKEN = clientToken;
+            this.FIAT_CURRENCY = fiatCurrency;
+        }
+
+        _get(endpoint, callback) {
+            request({
+                method: "GET",
+                url: API_URL + endpoint + "/",
+                headers: { "magic": MAGIC_TOKEN }
+            }, (err, result, body) => {
+                try {
+                    const tBody = JSON.parse(body);
+                    return callback(null, tBody);
+                } catch (e) {
+                    return callback(e);
+                }
+            });
+        }
+
+        _post(endpoint, data, callback) {
+            request({
+                method: "POST",
+                url: API_URL + endpointy,
+                headers: { "magic": MAGIC_TOKEN },
+                postData: {
+                    mimeType: 'application/x-www-form-urlencoded',
+                    params: data
+                }
+            }, (err, result, body) => {
+                try {
+                    const tBody = JSON.parse(body);
+                    return callback(null, tBody);
+                } catch (e) {
+                    return callback(e);
+                }
+            });
+        }
+
+        getPositions(callback) {
+            this._get(`get_all_positions/{this.CLIENT_TOKEN}?use_alias=true&fiat_currency={this.FIAT_CURRENCY}`, (err, pBody) => {
+                if (err) return callback(err);
+
+                if (typeof pBody.positionList == "undefined") return callback(new Error("Bad response"));
+
+                return callback(err, pBody.positionList);
+            });
+        }
+
+    }
+
+    module.exports = Blockfolio;
 
 })();
