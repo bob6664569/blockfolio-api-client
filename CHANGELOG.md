@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2018-04-30
+### Changed
+- You must now call
+BlockfolioAPI.init(DEVICE_TOKEN, (blockfolio) => { ... }); and wrap
+your code inside to make it work (initialize available tokens &
+exchanges)
+### Added
+- getCoinsList
+- BlockfolioAPI.createNew / _register for new accounts
+
 ## [0.1.1] - 2018-04-30
 ### Added
 - getMarketDetails, getHoldings

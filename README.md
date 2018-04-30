@@ -13,17 +13,19 @@ npm install blockfolio-api-client --save
 Usage
 --
 ```javascript
-const BlockfolioAPI = require("blockfolio-api-client");
+const Blockfolio = require("blockfolio-api-client");
 
 // BLOCKFOLIO_DEVICE_TOKEN is found under the "Settings" part of the app, in the bottom of the page
 // The currency specified on second parameter is optional (default to "usd")
-const Blockfolio = new BlockfolioAPI("BLOCKFOLIO_DEVICE_TOKEN", "eur");
+Blockfolio.init("BLOCKFOLIO_DEVICE_TOKEN", (err) => {
+    if (err) return console.error(err);
 
-Blockfolio.getPositions((err, positions) => {
+    Blockfolio.getPositions((err, positions) => {
+        if (err) return console.error(err);
 
-    if (err) throw(err);
+        console.log(positions);
+    });
 
-    console.log(positions);
 });
 ```
 
@@ -37,7 +39,7 @@ Methods
 
 **pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
 
-**exchange** (String) : Name of the exchange where the order is executed (see `getExchanges` to get the list of available exchanges for a specific token pair)
+**exchange** (String) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
 
 **initPrice** (Number) : Price of token pair when the order is executed (see `getPrice` to get the latest price for a specific token pair on a specific exchange)
 
@@ -62,7 +64,7 @@ Blockfolio.addPosition(true, "XMR/BTC", "bittrex", 0.015, 42, "I really like Mon
 
 **pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
 
-**exchange** (String) : Name of the exchange where the order is executed (see `getExchanges` to get the list of available exchanges for a specific token pair)
+**exchange** (String) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
 
 **callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body)
 
@@ -81,7 +83,7 @@ Blockfolio.watchCoin("XMR/BTC", "bittrex", (err, res) => {
 
 **pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
 
-**exchange** (String) : Name of the exchange where the order is executed (see `getExchanges` to get the list of available exchanges for a specific token pair)
+**exchange** (String) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
 
 **callback(err, price)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `price` should return the last price (otherwise, it will be the response body)
 
@@ -181,7 +183,7 @@ Blockfolio.removeCoin("XMR/BTC", (err, res) => {
 
 **pair** (String) : Token pair to remove from the portfolio (ie. `"XMR/BTC"`)
 
-**exchange** (String) : Name of the exchange where the order is executed (see `getExchanges` to get the list of available exchanges for a specific token pair)
+**exchange** (String) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
 
 **callback(err, response)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `response` should contain the details (otherwise, it will be the response body)
 
@@ -191,6 +193,21 @@ Blockfolio.getMarketDetails("XMR/BTC", "bittrex", (err, details) => {
     if (err) throw(err);
 
     console.log(details);
+});
+```
+
+### getCoinsList(callback)
+
+#### Get the whole list of coins supported by Blockfolio
+
+**callback(err, coins)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `coins` should contain an array of coins (otherwise, it will be the response body)
+
+#### Example
+```javascript
+Blockfolio.getCoinsList((err, coins) => {
+    if (err) throw(err);
+
+    console.log(coins);
 });
 ```
 

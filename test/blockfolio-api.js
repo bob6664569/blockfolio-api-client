@@ -7,26 +7,22 @@
             should          = chai.should(),
             expect          = chai.expect;
 
-    const   BlockfolioAPI   = require("../index");
+    const   Blockfolio   = require("../index");
 
 
     const FAKE_TOKEN = "1915f3d2ef313e86";
 
     describe("Blockfolio API", function() {
-        let Blockfolio;
-        describe("Module Instanciation", () => {
-            it("should be ok without currency", (done) => {
+        describe("Module Instanciation", function () {
+            // Expand timeout for initialization
+            this.timeout(5000);
+            it("should be ok with a working token", (done) => {
                 try {
-                    Blockfolio = new BlockfolioAPI(FAKE_TOKEN);
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            });
-            it("should be ok with a currency", (done) => {
-                try {
-                    Blockfolio = new BlockfolioAPI(FAKE_TOKEN, "eur");
-                    done();
+                    Blockfolio.init(FAKE_TOKEN, (err) => {
+                        if (err) return done(err);
+
+                        done();
+                    });
                 } catch (e) {
                     done(e);
                 }
@@ -34,22 +30,22 @@
         });
         describe("Tools", () => {
             it("should convert properly XRP/BTC to a pair struct", (done) => {
-                const pair = BlockfolioAPI.parseToken("XRP/BTC");
+                const pair = Blockfolio.utils.parseToken("XRP/BTC");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "XRP"});
                 done();
             });
             it("should convert properly BTC/USD to a pair struct", (done) => {
-                const pair = BlockfolioAPI.parseToken("BTC/USD");
+                const pair = Blockfolio.utils.parseToken("BTC/USD");
                 expect(pair).to.be.deep.equal({base: "USD", token: "BTC"});
                 done();
             });
             it("should convert properly AEON to a pair struct", (done) => {
-                const pair = BlockfolioAPI.parseToken("AEON");
+                const pair = Blockfolio.utils.parseToken("AEON");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "AEON"});
                 done();
             });
             it("should convert properly BTC-LTC to a pair struct", (done) => {
-                const pair = BlockfolioAPI.parseToken("BTC-LTC");
+                const pair = Blockfolio.utils.parseToken("BTC-LTC");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "LTC"});
                 done();
             });
