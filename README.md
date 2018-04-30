@@ -111,13 +111,17 @@ Blockfolio.getExchanges("XMR/BTC", (err, exchanges) => {
 });
 ```
 
-### getPositions(callback)
+### getPositions(pair_or_callback[, callback])
 
 #### Return a summary of all the positions in Blockfolio
 
-**callback(err, positions)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `positions` should contain an array containing all the positions (otherwise, it will be the response body)
+First param could be directly the callback, in this case, all position summaries are returned. If the first parameter is a token pair, then the detailed positions regarding this specific pair are returned.
 
-#### Example
+**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+
+**callback(err, positions)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `positions` should contain an array with all the position summaries, or detailed for specific token (otherwise, it will be the response body)
+
+#### Examples
 ```javascript
 Blockfolio.getPositions((err, positions) => {
     if (err) throw(err);
@@ -125,6 +129,31 @@ Blockfolio.getPositions((err, positions) => {
     positions.forEach((pos) => {
         console.log(`I HODL ${pos.quantity} ${pos.coin}/${pos.base} for a value of ${pos.holdingValueFiat} ${pos.fiatSymbol}`);
     });
+});
+
+Blockfolio.getPositions("BTC/USD", (err, positions) => {
+    if (err) throw(err);
+
+    // positions contains all the orders saved on Blockfolio in "BTC/USD"
+    positions.forEach((pos) => {
+        // Do something with each position taken
+    });
+});
+```
+
+### getHoldings(pair, callback)
+
+#### Get the summary of all opened positions on specified token pair
+
+**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+
+**callback(err, summary)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `holdings` should contain an object with the summarized informations on current positions on specified token pair (otherwise, it will be the response body)
+
+```javascript
+Blockfolio.getHoldings("XMR/BTC", (err, holdings) => {
+    if (err) throw(err);
+
+    console.log(holdings);
 });
 ```
 
@@ -142,6 +171,24 @@ Blockfolio.removeCoin("XMR/BTC", (err, res) => {
     if (err) throw(err);
 
     // XMR/BTC is now removed from your portfolio !
+});
+```
+
+
+### getMarketDetails(pair, callback)
+
+#### Get informations on the current market for specified token pair
+
+**pair** (String) : Token pair to remove from the portfolio (ie. `"XMR/BTC"`)
+
+**callback(err, response)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `response` should contain the details (otherwise, it will be the response body)
+
+#### Example
+```javascript
+Blockfolio.getMarketDetails("XMR/BTC", (err, details) => {
+    if (err) throw(err);
+
+    console.log(details);
 });
 ```
 

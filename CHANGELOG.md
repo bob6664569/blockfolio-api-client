@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.1.1] - 2018-04-30
+### Added
+- getMarketDetails, getHoldings
+### Changed
+- Update getPositions with token pair as first argument, returning only
+the concerned positions
+
 ## [0.1.0] - 2018-04-30
 ### Added
 - Complete test coverage

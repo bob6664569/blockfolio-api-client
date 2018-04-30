@@ -164,7 +164,9 @@
          */
         getPrice(pair, exchange, callback) {
             pair = Blockfolio.parseToken(pair);
+            exchange = exchange.toLowerCase();
             this._get(`lastprice/${exchange}/${pair.base}-${pair.token}?locale=${LOCALE}&use_alias=true`, (err, pBody) => {
+
                 if(err || typeof pBody.last === "undefined" || pBody.last <= 0) {
                     return callback(new Error("Unable to fetch last price !"));
                 }
@@ -193,28 +195,75 @@
 
         /**
          * Return all active user's positions
-         * @callback
+         * @param pair Token pair symbol (ie. "ADA/BTC"), or @callback directly
+         * @callback Optionnal if given as first argument
          */
-        getPositions(callback) {
+        getPositions(pair, callback = null) {
             if (!this._checkClientToken()) return callback(new Error("A valid CLIENT_TOKEN should be provided"));
 
-            this._get(`get_all_positions/${this.CLIENT_TOKEN}?use_alias=true&fiat_currency=${this.FIAT_CURRENCY}`, (err, pBody) => {
+            if (typeof pair === "function") {
+                callback = pair;
+                this._get(`get_all_positions/${this.CLIENT_TOKEN}?use_alias=true&fiat_currency=${this.FIAT_CURRENCY}`, (err, pBody) => {
+                    if (err) return callback(err);
+
+                    if (typeof pBody.positionList == "undefined") return callback(new Error("Bad response"));
+
+                    return callback(null, pBody.positionList);
+                });
+            } else {
+                pair = Blockfolio.parseToken(pair);
+                this._get(`get_positions_v2/${this.CLIENT_TOKEN}/${pair.base}-${pair.token}?use_alias=true&fiat_currency=${this.FIAT_CURRENCY}&locale=${LOCALE}`, (err, pBody) => {
+                    if (err) return callback(err);
+
+                    if (typeof pBody.positionList == "undefined") return callback(new Error("Bad response"));
+
+                    return callback(null, pBody.positionList);
+                });
+            }
+        }
+
+        /**
+         * Get summary of all positions regarding the specified token
+         * @param pair Token pair symbol (ie. "XLM/BTC")
+         * @param callback
+         */
+        getHoldings(pair, callback) {
+            if (!this._checkClientToken()) return callback(new Error("A valid CLIENT_TOKEN should be provided"));
+
+            pair = Blockfolio.parseToken(pair);
+            this._get(`get_combined_position/${this.CLIENT_TOKEN}/${pair.base}-${pair.token}?use_alias=true&fiat_currency=${this.FIAT_CURRENCY}&locale=${LOCALE}`, (err, pBody) => {
                 if (err) return callback(err);
 
-                if (typeof pBody.positionList == "undefined") return callback(new Error("Bad response"));
+                if (typeof pBody.holdings == "undefined") return callback(new Error("Bad response"));
 
-                return callback(null, pBody.positionList);
+                return callback(null, pBody.holdings);
             });
         }
 
         /**
          * Remove the coin, and all transactions related
-         * @param pair Token pair symbol (ie. LTC/BTC)
+         * @param pair Token pair symbol (ie. "LTC/BTC")
          * @callback
          */
         removeCoin(pair, callback) {
-            const symbols = pair.split("/").reverse().join("-");
-            this._get(`remove_all_positions/${this.CLIENT_TOKEN}/${symbols}?use_alias=true`, (err, pBody) => {
+            if (!this._checkClientToken()) return callback(new Error("A valid CLIENT_TOKEN should be provided"));
+
+            pair = Blockfolio.parseToken(pair);
+            this._get(`remove_all_positions/${this.CLIENT_TOKEN}/${pair.base}-${pair.token}?use_alias=true`, (err, pBody) => {
+                if (err) return callback(err);
+
+                return callback(null, pBody);
+            });
+        }
+
+        /**
+         * Retrieve market infos from Blockfolio for this pair
+         * @param pair Token Pair (ie. "BYTE/BTC")
+         * @callback
+         */
+        getMarketDetails(pair, callback) {
+            pair = Blockfolio.parseToken(pair);
+            this._get(`marketdetails_v2/${this.CLIENT_TOKEN}/${pair.base}-${pair.token}?use_alias=true&locale=${LOCALE}&fiat_currency=${this.FIAT_CURRENCY}`, (err, pBody) => {
                 if (err) return callback(err);
 
                 return callback(null, pBody);

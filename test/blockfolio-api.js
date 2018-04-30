@@ -4,6 +4,7 @@
     'use strict';
 
     const   chai            = require("chai"),
+            should          = chai.should(),
             expect          = chai.expect;
 
     const   BlockfolioAPI   = require("../index");
@@ -68,9 +69,9 @@
             });
             it("Get available exchanges for an incorrect token", (done) => {
                 Blockfolio.getExchanges("ZSKJD/BTC", (err, exchanges) => {
-                    expect(err.message).to.exist;
+                    should.exist(err.message);
                     expect(err.message).to.equal("Unable to get available exchanges for this token !");
-                    expect(exchanges).to.not.exist;
+                    should.not.exist(exchanges);
                     done();
                 });
             });
@@ -94,9 +95,9 @@
             });
             it("Get the last price of an incorrect token on this exchange", (done) => {
                 Blockfolio.getPrice("EAZRREZREZ/BTC", exchange, (err, rPrice) => {
-                    expect(err.message).to.exist;
+                    should.exist(err.message);
                     expect(err.message).to.equal("Unable to fetch last price !");
-                    expect(rPrice).to.not.exist;
+                    should.not.exist(rPrice);
                     done();
                 });
             });
@@ -105,6 +106,15 @@
                     if (err) return done(err);
 
                     expect(res).to.equal("success");
+                    done();
+                });
+            });
+            it("Get the summary for current position", (done) => {
+                Blockfolio.getHoldings("AEON/BTC", (err, summary) => {
+                    if (err) return done(err);
+
+                    should.exist(summary.holdingValueString);
+                    expect(summary.holdingValueString).to.be.a("string");
                     done();
                 });
             });
