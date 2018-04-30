@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.1.0] - 2018-04-30
+### Added
+- Complete test coverage
+
 ## [0.0.6] - 2018-04-30
 ### Added
 - _parsePair

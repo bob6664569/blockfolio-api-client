@@ -1,6 +1,6 @@
 {
   "name": "blockfolio-api-client",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "JavaScript module to access Blockfolio API",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
   },
   "keywords": [
     "blockfolio",
+    "blockchain",
     "api",
     "blockfolio-api",
     "cryptocurrencies",

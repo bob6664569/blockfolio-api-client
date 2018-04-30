@@ -97,7 +97,7 @@
          * @returns {*} Structure with base & token values (default base is BTC)
          * @private
          */
-        _parseToken(tokenStr) {
+        static parseToken(tokenStr) {
             if (tokenStr.indexOf("/") > -1) { // Classic representation
                 const [token, base] = tokenStr.split("/");
                 return {base, token};
@@ -122,7 +122,7 @@
         /**
          * Add a new position to the portfolio
          * @param {Boolean} buy Action of buy or sell
-         * @param symbol Token pair symbol (ie. XRP/BTC)
+         * @param pair Token pair symbol (ie. XRP/BTC)
          * @param exchange Name of the exchange (Blockfolio format, see getExchanges)
          * @param initPrice Initial price for the first transaction
          * @param amount Amount of token buy/sell
@@ -133,7 +133,7 @@
             if (!this._checkClientToken()) return callback(new Error("A valid CLIENT_TOKEN should be provided"));
 
             // Prepare params
-            pair = this._parseToken(pair);
+            pair = Blockfolio.parseToken(pair);
             const operation = buy ? 1 : 0;
             const URLEncodedNote = encodeURIComponent(note);
             const timestamp = new Date().getTime();
@@ -163,11 +163,9 @@
          * @callback
          */
         getPrice(pair, exchange, callback) {
-            pair = this._parseToken(pair);
+            pair = Blockfolio.parseToken(pair);
             this._get(`lastprice/${exchange}/${pair.base}-${pair.token}?locale=${LOCALE}&use_alias=true`, (err, pBody) => {
-                if (err) return callback(err);
-
-                if(typeof pBody.last == "undefined" || pBody.last <= 0) {
+                if(err || typeof pBody.last === "undefined" || pBody.last <= 0) {
                     return callback(new Error("Unable to fetch last price !"));
                 }
 
@@ -181,11 +179,11 @@
          * @callback
          */
         getExchanges(pair, callback) {
-            pair = this._parseToken(pair);
+            pair = Blockfolio.parseToken(pair);
             this._get(`exchangelist_v2/${pair.base}-${pair.token}`, (err, pBody) => {
                 if (err) return callback(err);
 
-                if(typeof pBody.exchange == "undefined" || pBody.exchange.length < 1) {
+                if(typeof pBody.exchange === "undefined" || pBody.exchange.length < 1) {
                     return callback(new Error("Unable to get available exchanges for this token !"));
                 }
 

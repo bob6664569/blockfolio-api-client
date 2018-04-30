@@ -33,22 +33,22 @@
         });
         describe("Tools", () => {
             it("should convert properly XRP/BTC to a pair struct", (done) => {
-                const pair = Blockfolio._parseToken("XRP/BTC");
+                const pair = BlockfolioAPI.parseToken("XRP/BTC");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "XRP"});
                 done();
             });
             it("should convert properly BTC/USD to a pair struct", (done) => {
-                const pair = Blockfolio._parseToken("BTC/USD");
+                const pair = BlockfolioAPI.parseToken("BTC/USD");
                 expect(pair).to.be.deep.equal({base: "USD", token: "BTC"});
                 done();
             });
             it("should convert properly AEON to a pair struct", (done) => {
-                const pair = Blockfolio._parseToken("AEON");
+                const pair = BlockfolioAPI.parseToken("AEON");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "AEON"});
                 done();
             });
             it("should convert properly BTC-LTC to a pair struct", (done) => {
-                const pair = Blockfolio._parseToken("BTC-LTC");
+                const pair = BlockfolioAPI.parseToken("BTC-LTC");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "LTC"});
                 done();
             });
@@ -59,16 +59,24 @@
             let exchange;
             it("Get available exchanges for AEON/BTC", (done) => {
                 Blockfolio.getExchanges("AEON/BTC", (err, exchanges) => {
-                    if (err) done(err);
+                    if (err) return done(err);
 
                     expect(exchanges).to.be.an("array");
                     exchange = exchanges[0];
                     done();
                 });
             });
+            it("Get available exchanges for an incorrect token", (done) => {
+                Blockfolio.getExchanges("ZSKJD/BTC", (err, exchanges) => {
+                    expect(err.message).to.exist;
+                    expect(err.message).to.equal("Unable to get available exchanges for this token !");
+                    expect(exchanges).to.not.exist;
+                    done();
+                });
+            });
             it("Add a token pair to watch from the first exchange", (done) => {
                 Blockfolio.watchCoin("AEON/BTC", exchange, (err, res) => {
-                    if (err) done(err);
+                    if (err) return done(err);
 
                     expect(res).to.equal("success");
                     done();
@@ -77,16 +85,24 @@
             let price = 0;
             it("Get the last price of AEON on this exchange", (done) => {
                 Blockfolio.getPrice("AEON/BTC", exchange, (err, rPrice) => {
-                    if (err) done(err);
+                    if (err) return done(err);
 
-                    expect(rPrice).to.be.an("number");
+                    expect(rPrice).to.be.a("number");
                     price = rPrice;
+                    done();
+                });
+            });
+            it("Get the last price of an incorrect token on this exchange", (done) => {
+                Blockfolio.getPrice("EAZRREZREZ/BTC", exchange, (err, rPrice) => {
+                    expect(err.message).to.exist;
+                    expect(err.message).to.equal("Unable to fetch last price !");
+                    expect(rPrice).to.not.exist;
                     done();
                 });
             });
             it("Add a BTC position on this pair", (done) => {
                 Blockfolio.addPosition(true, "AEON/BTC", exchange, 0.00018, 200, "AEON FTW", (err, res) => {
-                    if (err) done(err);
+                    if (err) return done(err);
 
                     expect(res).to.equal("success");
                     done();
@@ -94,7 +110,7 @@
             });
             it("And then remove the coin from portfolio", (done) => {
                 Blockfolio.removeCoin("AEON/BTC", (err, res) => {
-                    if (err) done(err);
+                    if (err) return done(err);
 
                     expect(res).to.equal("success");
                     done();
@@ -102,7 +118,7 @@
             });
             it("Get actual positions", (done) => {
                 Blockfolio.getPositions((err, positions) => {
-                    if (err) done(err);
+                    if (err) return done(err);
 
                     expect(positions).to.exist;
                     done();
