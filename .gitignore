@@ -57,5 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
-#webstorm
+# webstorm
 .idea
+
+# Local test file
+example.js

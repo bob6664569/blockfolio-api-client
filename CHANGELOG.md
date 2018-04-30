@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.0.6] - 2018-04-30
+### Added
+- _parsePair
+
 ## [0.0.5] - 2018-04-30
 ### Added
 - Doc for every method

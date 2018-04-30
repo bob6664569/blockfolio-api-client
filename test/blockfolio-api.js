@@ -31,6 +31,28 @@
                 }
             });
         });
+        describe("Tools", () => {
+            it("should convert properly XRP/BTC to a pair struct", (done) => {
+                const pair = Blockfolio._parseToken("XRP/BTC");
+                expect(pair).to.be.deep.equal({base: "BTC", token: "XRP"});
+                done();
+            });
+            it("should convert properly BTC/USD to a pair struct", (done) => {
+                const pair = Blockfolio._parseToken("BTC/USD");
+                expect(pair).to.be.deep.equal({base: "USD", token: "BTC"});
+                done();
+            });
+            it("should convert properly AEON to a pair struct", (done) => {
+                const pair = Blockfolio._parseToken("AEON");
+                expect(pair).to.be.deep.equal({base: "BTC", token: "AEON"});
+                done();
+            });
+            it("should convert properly BTC-LTC to a pair struct", (done) => {
+                const pair = Blockfolio._parseToken("BTC-LTC");
+                expect(pair).to.be.deep.equal({base: "BTC", token: "LTC"});
+                done();
+            });
+        });
         describe("Endpoints tests", function () {
             // Expand timeout for network & API lentency
             this.timeout(5000);

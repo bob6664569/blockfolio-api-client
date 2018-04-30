@@ -63,6 +63,12 @@
             this.FIAT_CURRENCY = fiatCurrency;
         }
 
+        /**
+         * Make and return the call to the API
+         * @param endpoint
+         * @param callback
+         * @private
+         */
         _get(endpoint, callback) {
             request({
                 method: "GET",
@@ -85,32 +91,55 @@
             });
         }
 
-        _checkToken() {
-            // Maybe check a specific endpoint ?
+        /**
+         * Parse and format a token pair
+         * @param tokenStr String containing the token (ie. "XRP/BTC", "AEON", "USD-LTC", ...)
+         * @returns {*} Structure with base & token values (default base is BTC)
+         * @private
+         */
+        _parseToken(tokenStr) {
+            if (tokenStr.indexOf("/") > -1) { // Classic representation
+                const [token, base] = tokenStr.split("/");
+                return {base, token};
+            } else if(tokenStr.indexOf("-") > -1) { // Inversed one
+                const [base, token] = tokenStr.split("-");
+                return {base, token};
+            } else {
+                return {base: "BTC", token: tokenStr};
+            }
+        }
+
+        /**
+         * Check validity of a client token
+         * @returns {boolean}
+         * @private
+         */
+        _checkClientToken() {
+            // Maybe check a specific endpoint for the validity of the token / store it ?
             return (this.CLIENT_TOKEN !== null);
         }
 
         /**
          * Add a new position to the portfolio
-         * @param buy Boolean Action of buy or sell
+         * @param {Boolean} buy Action of buy or sell
          * @param symbol Token pair symbol (ie. XRP/BTC)
          * @param exchange Name of the exchange (Blockfolio format, see getExchanges)
          * @param initPrice Initial price for the first transaction
          * @param amount Amount of token buy/sell
          * @param note Optional note
-         * @param callback
+         * @callback
          */
         addPosition(buy, pair, exchange, initPrice, amount, note, callback) {
-            if (!this._checkToken()) return callback(new Error("A valid CLIENT_TOKEN should be provided"));
+            if (!this._checkClientToken()) return callback(new Error("A valid CLIENT_TOKEN should be provided"));
 
             // Prepare params
-            const symbols = pair.split("/");
+            pair = this._parseToken(pair);
             const operation = buy ? 1 : 0;
             const URLEncodedNote = encodeURIComponent(note);
             const timestamp = new Date().getTime();
 
             // Fetch add
-            this._get(`add_position_v2/${this.CLIENT_TOKEN}/${operation}/${symbols[0]}/${symbols[1]}/${exchange}/${initPrice}/${amount}/${timestamp}/0?platform=${PLATFORM}&note=${URLEncodedNote}&use_alias=true`, (err, pBody) => {
+            this._get(`add_position_v2/${this.CLIENT_TOKEN}/${operation}/${pair.token}/${pair.base}/${exchange}/${initPrice}/${amount}/${timestamp}/0?platform=${PLATFORM}&note=${URLEncodedNote}&use_alias=true`, (err, pBody) => {
                 if (err) return callback(err);
 
                 return callback(null, pBody);
@@ -121,7 +150,7 @@
          * Add a token to your watchlist without any open position
          * @param pair Token pair (ie. STR/BTC)
          * @param exchange Name of the exchange (Blockfolio format, see getExchanges)
-         * @param callback
+         * @callback
          */
         watchCoin(pair, exchange, callback) {
             return this.addPosition(1, pair, exchange, 0, 0, "", callback);
@@ -131,11 +160,11 @@
          * Get the last ticker price of selected token pair
          * @param pair Token pair (ie. ADA/BTC)
          * @param exchange Name of the exchange (Blockfolio format, see getExchanges)
-         * @param callback
+         * @callback
          */
         getPrice(pair, exchange, callback) {
-            const symbols = pair.split("/").reverse().join("-");
-            this._get(`lastprice/${exchange}/${symbols}?locale=${LOCALE}&use_alias=true`, (err, pBody) => {
+            pair = this._parseToken(pair);
+            this._get(`lastprice/${exchange}/${pair.base}-${pair.token}?locale=${LOCALE}&use_alias=true`, (err, pBody) => {
                 if (err) return callback(err);
 
                 if(typeof pBody.last == "undefined" || pBody.last <= 0) {
@@ -149,11 +178,11 @@
         /**
          * Get available exchanges for selected pair
          * @param pair Token pair (ie. MMN/BTC)
-         * @param callback
+         * @callback
          */
         getExchanges(pair, callback) {
-            const symbols = pair.split("/").reverse().join("-");
-            this._get(`exchangelist_v2/${symbols}`, (err, pBody) => {
+            pair = this._parseToken(pair);
+            this._get(`exchangelist_v2/${pair.base}-${pair.token}`, (err, pBody) => {
                 if (err) return callback(err);
 
                 if(typeof pBody.exchange == "undefined" || pBody.exchange.length < 1) {
@@ -166,10 +195,10 @@
 
         /**
          * Return all active user's positions
-         * @param callback
+         * @callback
          */
         getPositions(callback) {
-            if (!this._checkToken()) return callback(new Error("A valid CLIENT_TOKEN should be provided"));
+            if (!this._checkClientToken()) return callback(new Error("A valid CLIENT_TOKEN should be provided"));
 
             this._get(`get_all_positions/${this.CLIENT_TOKEN}?use_alias=true&fiat_currency=${this.FIAT_CURRENCY}`, (err, pBody) => {
                 if (err) return callback(err);
@@ -183,7 +212,7 @@
         /**
          * Remove the coin, and all transactions related
          * @param pair Token pair symbol (ie. LTC/BTC)
-         * @param callback
+         * @callback
          */
         removeCoin(pair, callback) {
             const symbols = pair.split("/").reverse().join("-");
