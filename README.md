@@ -130,7 +130,7 @@ Blockfolio.getPositions((err, positions) => {
 
 ### removeCoin(pair, callback)
 
-#### Completely remove a coin from your portfolio
+#### Completely remove a coin from your portfolio
 
 **pair** (String) : Token pair to remove from the portfolio (ie. `"XMR/BTC"`)
 
