@@ -175,11 +175,13 @@ Blockfolio.removeCoin("XMR/BTC", (err, res) => {
 ```
 
 
-### getMarketDetails(pair, callback)
+### getMarketDetails(pair, exchange, callback)
 
-#### Get informations on the current market for specified token pair
+#### Get informations on the current market for specified token pair on specified exchange
 
 **pair** (String) : Token pair to remove from the portfolio (ie. `"XMR/BTC"`)
+
+**exchange** (String) : Name of the exchange where the order is executed (see `getExchanges` to get the list of available exchanges for a specific token pair)
 
 **callback(err, response)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `response` should contain the details (otherwise, it will be the response body)
 

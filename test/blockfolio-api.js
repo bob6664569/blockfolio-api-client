@@ -57,8 +57,17 @@
         describe("Endpoints tests", function () {
             // Expand timeout for network & API lentency
             this.timeout(5000);
+            it("Get market details for an AEON/BTC", (done) => {
+                Blockfolio.getMarketDetails("AEON/BTC", "bittrex", (err, details) => {
+                    if (err) return done(err);
+
+                    should.exist(details.ask);
+                    expect(details.ask).to.be.a("string");
+                    done();
+                });
+            });
             let exchange;
-            it("Get available exchanges for AEON/BTC", (done) => {
+            it("Get available exchanges for this token", (done) => {
                 Blockfolio.getExchanges("AEON/BTC", (err, exchanges) => {
                     if (err) return done(err);
 
@@ -115,6 +124,15 @@
 
                     should.exist(summary.holdingValueString);
                     expect(summary.holdingValueString).to.be.a("string");
+                    done();
+                });
+            });
+            it("Get orders details for this position", (done) => {
+                Blockfolio.getPositions("AEON/BTC", (err, positions) => {
+                    if (err) return done(err);
+
+                    should.exist(positions);
+                    expect(positions).to.be.an("array");
                     done();
                 });
             });

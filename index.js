@@ -257,13 +257,14 @@
         }
 
         /**
-         * Retrieve market infos from Blockfolio for this pair
+         * Retrieve market infos from Blockfolio for this pair on specified exchange
          * @param pair Token Pair (ie. "BYTE/BTC")
+         * @param exchange Name of the exchange (Blockfolio format, see getExchanges)
          * @callback
          */
-        getMarketDetails(pair, callback) {
+        getMarketDetails(pair, exchange, callback) {
             pair = Blockfolio.parseToken(pair);
-            this._get(`marketdetails_v2/${this.CLIENT_TOKEN}/${pair.base}-${pair.token}?use_alias=true&locale=${LOCALE}&fiat_currency=${this.FIAT_CURRENCY}`, (err, pBody) => {
+            this._get(`marketdetails_v2/${this.CLIENT_TOKEN}/${exchange}/${pair.base}-${pair.token}?use_alias=true&locale=${LOCALE}&fiat_currency=${this.FIAT_CURRENCY}`, (err, pBody) => {
                 if (err) return callback(err);
 
                 return callback(null, pBody);
