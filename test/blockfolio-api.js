@@ -148,7 +148,8 @@
                 Blockfolio.getPositions((err, positions) => {
                     if (err) return done(err);
 
-                    expect(positions).to.exist;
+                    should.exist(positions);
+                    expect(positions).to.be.an("array");
                     done();
                 });
             });
