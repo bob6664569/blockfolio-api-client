@@ -13,7 +13,7 @@ npm install blockfolio-api-client --save
 Usage
 --
 ```javascript
-const BlockfolioAPI = require("blockfolio-api");
+const BlockfolioAPI = require("blockfolio-api-client");
 
 // BLOCKFOLIO_DEVICE_TOKEN is found under the "Settings" part of the app, in the bottom of the page
 // The currency specified on second parameter is optional (default to "usd")
