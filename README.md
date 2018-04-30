@@ -41,7 +41,7 @@ Methods
 
 **initPrice** (Number) : Price of token pair when the order is executed (see `getPrice` to get the latest price for a specific token pair on a specific exchange)
 
-**amount** (Number) : Quantity of order
+**amount** (Number) : Quantity of tokens in the order
 
 **note** (String) : Note to add to the position in Blockfolio
 
@@ -113,7 +113,37 @@ Blockfolio.getExchanges("XMR/BTC", (err, exchanges) => {
 
 ### getPositions(callback)
 
+#### Return a summary of all the positions in Blockfolio
+
+**callback(err, positions)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `positions` should contain an array containing all the positions (otherwise, it will be the response body)
+
+#### Example
+```javascript
+Blockfolio.getPositions((err, positions) => {
+    if (err) throw(err);
+
+    positions.forEach((pos) => {
+        console.log(`I HODL ${pos.quantity} ${pos.coin}/${pos.base} for a value of ${pos.holdingValueFiat} ${pos.fiatSymbol}`);
+    });
+});
+```
+
 ### removeCoin(pair, callback)
+
+#### Completely remove a coin from your portfolio
+
+**pair** (String) : Token pair to remove from the portfolio (ie. `"XMR/BTC"`)
+
+**callback(err, response)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `response` should contain `success` (otherwise, it will be the response body)
+
+#### Example
+```javascript
+Blockfolio.removeCoin("XMR/BTC", (err, res) => {
+    if (err) throw(err);
+
+    // XMR/BTC is now removed from your portfolio !
+});
+```
 
 License
 --

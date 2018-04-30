@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.0.5] - 2018-04-30
+### Added
+- Doc for every method
+
 ## [0.0.4] - 2018-04-30
 ### Added
 - Some doc in README
