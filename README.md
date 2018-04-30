@@ -187,7 +187,7 @@ Blockfolio.removeCoin("XMR/BTC", (err, res) => {
 
 #### Example
 ```javascript
-Blockfolio.getMarketDetails("XMR/BTC", (err, details) => {
+Blockfolio.getMarketDetails("XMR/BTC", "bittrex", (err, details) => {
     if (err) throw(err);
 
     console.log(details);
