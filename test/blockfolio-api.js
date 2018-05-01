@@ -14,6 +14,14 @@
 
     describe("Blockfolio API", function() {
         describe("Module Instanciation", function () {
+            it("a protected method called without it should return an error", function (done) {
+                Blockfolio.getPositions("BTC/USD", (err, positions) => {
+                    should.exist(err.message);
+                    expect(err.message).to.equal("A valid CLIENT_TOKEN should be provided");
+                    should.not.exist(positions);
+                    done();
+                });
+            });
             // Expand timeout for initialization
             this.timeout(5000);
             it("should be ok with a working token", function (done) {

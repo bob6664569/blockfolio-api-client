@@ -8,8 +8,10 @@
 BlockfolioAPI.init(DEVICE_TOKEN, (blockfolio) => { ... }); and wrap
 your code inside to make it work (initialize available tokens &
 exchanges)
+- Every method that calls the API with a token pair now checks the
+validity and can return new errors
 ### Added
-- getCoinsList
+- getCoinsList, _validateTokenPair
 - BlockfolioAPI.createNew / _register for new accounts
 
 ## [0.1.1] - 2018-04-30
