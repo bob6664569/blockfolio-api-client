@@ -9,7 +9,6 @@
 
     const   Blockfolio      = require("../index");
 
-
     const   FAKE_TOKEN      = "1915f3d2ef313e86";
 
     describe("Blockfolio API", function() {
@@ -17,7 +16,7 @@
             it("a protected method called without it should return an error", function (done) {
                 Blockfolio.getPositions("BTC/USD", (err, positions) => {
                     should.exist(err.message);
-                    expect(err.message).to.equal("A valid CLIENT_TOKEN should be provided");
+                    expect(err.message).to.equal("A valid CLIENT_TOKEN should be provided! (Have you called Blockfolio.init()?)");
                     should.not.exist(positions);
                     done();
                 });
@@ -60,7 +59,7 @@
         });
         describe("Endpoints", function () {
             // Expand timeout for network & API lentency
-            this.timeout(5000);
+            this.timeout(10000);
             it("Get market details for an AEON/BTC", function (done) {
                 Blockfolio.getMarketDetails("AEON/BTC", "bittrex", (err, details) => {
                     if (err) return done(err);
@@ -70,13 +69,11 @@
                     done();
                 });
             });
-            let exchange;
             it("Get available exchanges for this token", function (done) {
                 Blockfolio.getExchanges("AEON/BTC", (err, exchanges) => {
                     if (err) return done(err);
 
                     expect(exchanges).to.be.an("array");
-                    exchange = exchanges[0];
                     done();
                 });
             });
@@ -88,8 +85,8 @@
                     done();
                 });
             });
-            it("Add a token pair to watch from the first exchange", function (done) {
-                Blockfolio.watchCoin("AEON/BTC", exchange, (err, res) => {
+            it("Add a token pair to watch from Bittrex", function (done) {
+                Blockfolio.watchCoin("AEON/BTC", "bittrex", (err, res) => {
                     if (err) return done(err);
 
                     expect(res).to.equal("success");
@@ -97,33 +94,34 @@
                 });
             });
             it("Get the last price of an incorrect token on this exchange", function (done) {
-                Blockfolio.getPrice("EAZRREZREZ/BTC", exchange, (err, rPrice) => {
+                Blockfolio.getPrice("EAZRREZREZ/BTC", "bittrex", (err, rPrice) => {
                     should.exist(err.message);
                     expect(err.message).to.equal("EAZRREZREZ is not an available token on Blockfolio!");
                     should.not.exist(rPrice);
                     done();
                 });
             });
-            it("... Try with a valid token, but an incorrect base", function (done) {
-                Blockfolio.getPrice("BTC/DSQFSDFDSF", exchange, (err, rPrice) => {
+
+
+            it("... and with a valid token, but an incorrect base", function (done) {
+                Blockfolio.getPrice("BTC/DSQFSDFDSF", "bittrex", (err, nPrice) => {
                     should.exist(err.message);
                     expect(err.message).to.equal("BTC is not an available in DSQFSDFDSF on Blockfolio!");
-                    should.not.exist(rPrice);
                     done();
                 });
             });
-            let price = 0;
+
+
             it("Get the last price of AEON on this exchange", function (done) {
-                Blockfolio.getPrice("AEON/BTC", exchange, (err, rPrice) => {
+                Blockfolio.getPrice("AEON/BTC", "bittrex", (err, cPrice) => {
                     if (err) return done(err);
 
-                    expect(rPrice).to.be.a("number");
-                    price = rPrice;
+                    expect(cPrice).to.be.a("number");
                     done();
                 });
             });
             it("Add a BTC position on this pair", function (done) {
-                Blockfolio.addPosition(true, "AEON/BTC", exchange, 0.00018, 200, "AEON FTW", (err, res) => {
+                Blockfolio.addPosition(true, "AEON/BTC", "bittrex", 0.00018, 200, "AEON FTW", (err, res) => {
                     if (err) return done(err);
 
                     expect(res).to.equal("success");
@@ -167,6 +165,5 @@
             });
         });
     });
-
 
 })();
