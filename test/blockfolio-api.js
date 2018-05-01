@@ -16,7 +16,7 @@
         describe("Module Instanciation", function () {
             // Expand timeout for initialization
             this.timeout(5000);
-            it("should be ok with a working token", (done) => {
+            it("should be ok with a working token", function (done) {
                 try {
                     Blockfolio.init(FAKE_TOKEN, (err) => {
                         if (err) return done(err);
@@ -28,32 +28,32 @@
                 }
             });
         });
-        describe("Tools", () => {
-            it("should convert properly XRP/BTC to a pair struct", (done) => {
+        describe("Tools", function () {
+            it("should convert properly XRP/BTC to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("XRP/BTC");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "XRP"});
                 done();
             });
-            it("should convert properly BTC/USD to a pair struct", (done) => {
+            it("should convert properly BTC/USD to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC/USD");
                 expect(pair).to.be.deep.equal({base: "USD", token: "BTC"});
                 done();
             });
-            it("should convert properly AEON to a pair struct", (done) => {
+            it("should convert properly AEON to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("AEON");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "AEON"});
                 done();
             });
-            it("should convert properly BTC-LTC to a pair struct", (done) => {
+            it("should convert properly BTC-LTC to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC-LTC");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "LTC"});
                 done();
             });
         });
-        describe("Endpoints tests", function () {
+        describe("Endpoints", function () {
             // Expand timeout for network & API lentency
             this.timeout(5000);
-            it("Get market details for an AEON/BTC", (done) => {
+            it("Get market details for an AEON/BTC", function (done) {
                 Blockfolio.getMarketDetails("AEON/BTC", "bittrex", (err, details) => {
                     if (err) return done(err);
 
@@ -63,7 +63,7 @@
                 });
             });
             let exchange;
-            it("Get available exchanges for this token", (done) => {
+            it("Get available exchanges for this token", function (done) {
                 Blockfolio.getExchanges("AEON/BTC", (err, exchanges) => {
                     if (err) return done(err);
 
@@ -72,15 +72,15 @@
                     done();
                 });
             });
-            it("Get available exchanges for an incorrect token", (done) => {
+            it("Get available exchanges for an incorrect token", function (done) {
                 Blockfolio.getExchanges("ZSKJD/BTC", (err, exchanges) => {
                     should.exist(err.message);
-                    expect(err.message).to.equal("Unable to get available exchanges for this token !");
+                    expect(err.message).to.equal("ZSKJD is not an available token on Blockfolio!");
                     should.not.exist(exchanges);
                     done();
                 });
             });
-            it("Add a token pair to watch from the first exchange", (done) => {
+            it("Add a token pair to watch from the first exchange", function (done) {
                 Blockfolio.watchCoin("AEON/BTC", exchange, (err, res) => {
                     if (err) return done(err);
 
@@ -88,8 +88,24 @@
                     done();
                 });
             });
+            it("Get the last price of an incorrect token on this exchange", function (done) {
+                Blockfolio.getPrice("EAZRREZREZ/BTC", exchange, (err, rPrice) => {
+                    should.exist(err.message);
+                    expect(err.message).to.equal("EAZRREZREZ is not an available token on Blockfolio!");
+                    should.not.exist(rPrice);
+                    done();
+                });
+            });
+            it("... Try with a valid token, but an incorrect base", function (done) {
+                Blockfolio.getPrice("BTC/DSQFSDFDSF", exchange, (err, rPrice) => {
+                    should.exist(err.message);
+                    expect(err.message).to.equal("BTC is not an available in DSQFSDFDSF on Blockfolio!");
+                    should.not.exist(rPrice);
+                    done();
+                });
+            });
             let price = 0;
-            it("Get the last price of AEON on this exchange", (done) => {
+            it("Get the last price of AEON on this exchange", function (done) {
                 Blockfolio.getPrice("AEON/BTC", exchange, (err, rPrice) => {
                     if (err) return done(err);
 
@@ -98,15 +114,7 @@
                     done();
                 });
             });
-            it("Get the last price of an incorrect token on this exchange", (done) => {
-                Blockfolio.getPrice("EAZRREZREZ/BTC", exchange, (err, rPrice) => {
-                    should.exist(err.message);
-                    expect(err.message).to.equal("Unable to fetch last price !");
-                    should.not.exist(rPrice);
-                    done();
-                });
-            });
-            it("Add a BTC position on this pair", (done) => {
+            it("Add a BTC position on this pair", function (done) {
                 Blockfolio.addPosition(true, "AEON/BTC", exchange, 0.00018, 200, "AEON FTW", (err, res) => {
                     if (err) return done(err);
 
@@ -114,7 +122,7 @@
                     done();
                 });
             });
-            it("Get the summary for current position", (done) => {
+            it("Get the summary for current position", function (done) {
                 Blockfolio.getHoldings("AEON/BTC", (err, summary) => {
                     if (err) return done(err);
 
@@ -123,7 +131,7 @@
                     done();
                 });
             });
-            it("Get orders details for this position", (done) => {
+            it("Get orders details for this position", function (done) {
                 Blockfolio.getPositions("AEON/BTC", (err, positions) => {
                     if (err) return done(err);
 
@@ -132,7 +140,7 @@
                     done();
                 });
             });
-            it("And then remove the coin from portfolio", (done) => {
+            it("And then remove the coin from portfolio", function (done) {
                 Blockfolio.removeCoin("AEON/BTC", (err, res) => {
                     if (err) return done(err);
 
@@ -140,7 +148,7 @@
                     done();
                 });
             });
-            it("Get actual positions", (done) => {
+            it("Get actual positions", function (done) {
                 Blockfolio.getPositions((err, positions) => {
                     if (err) return done(err);
 
