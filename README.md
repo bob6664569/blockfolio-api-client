@@ -4,22 +4,35 @@
 
 #### Non-official Node.JS API Client for Blockfolio
 
+Disclaimer
+----------
+
+**Use with caution: Your `DEVICE_TOKEN` is used to access all your
+Blockfolio datas, keep it safe and DON'T make it public.**
+
+**This module is NOT provided by Blockfolio.** Get the official Blockfolio app at [https://www.blockfolio.com/]
+
 Install
---
+-------
 ```sh
 npm install blockfolio-api-client --save
 ```
 
 Usage
---
+-----
+ 1. Require the module
+ 2. Call the `init` method with your `DEVICE8TOKEN` (you will find your
+ token on the Blockfolio app, in the bottom of the `Settings` page)
+ 3. Once initialized, you can use the following doc and access to all
+ your Blockfolio data !
+
 ```javascript
 const Blockfolio = require("blockfolio-api-client");
 
-// BLOCKFOLIO_DEVICE_TOKEN is found under the "Settings" part of the app, in the bottom of the page
-// The currency specified on second parameter is optional (default to "usd")
 Blockfolio.init("BLOCKFOLIO_DEVICE_TOKEN", (err) => {
     if (err) return console.error(err);
 
+    // Use any of the following methods to play with your Blockfolio datas, here : getPositions
     Blockfolio.getPositions((err, positions) => {
         if (err) return console.error(err);
 
@@ -33,7 +46,7 @@ Methods
 -------
 ### addPosition(buy, pair, exchange, initPrice, amount, note, callback)
 
-#### Add a new position to your portfolio.
+**Add a new position to your portfolio.**
 
 **buy** (Boolean) : `TRUE` is buy, `FALSE` is sell
 
@@ -60,7 +73,7 @@ Blockfolio.addPosition(true, "XMR/BTC", "bittrex", 0.015, 42, "I really like Mon
 
 ### watchCoin(pair, exchange, callback)
 
-#### Add a coin to your portfolio without adding any position
+**Add a coin to your portfolio without adding any position**
 
 **pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
 
@@ -79,7 +92,7 @@ Blockfolio.watchCoin("XMR/BTC", "bittrex", (err, res) => {
 
 ### getPrice(pair, exchange, callback)
 
-#### Retrieve the last ticker price for specific token pair on specific exchange
+**Retrieve the last ticker price for specific token pair on specific exchange**
 
 **pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
 
@@ -98,7 +111,7 @@ Blockfolio.getPrice("XMR/BTC", "bittrex", (err, price) => {
 
 ### getExchanges(pair, callback)
 
-#### Returns a list of exchanges where the specified token pair is available
+**Returns a list of exchanges where the specified token pair is available**
 
 **pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
 
@@ -115,7 +128,7 @@ Blockfolio.getExchanges("XMR/BTC", (err, exchanges) => {
 
 ### getPositions(pair_or_callback[, callback])
 
-#### Return a summary of all the positions in Blockfolio
+**Return a summary of all the positions in Blockfolio**
 
 First param could be directly the callback, in this case, all position summaries are returned. If the first parameter is a token pair, then the detailed positions regarding this specific pair are returned.
 
@@ -145,7 +158,7 @@ Blockfolio.getPositions("BTC/USD", (err, positions) => {
 
 ### getHoldings(pair, callback)
 
-#### Get the summary of all opened positions on specified token pair
+**Get the summary of all opened positions on specified token pair**
 
 **pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
 
@@ -161,7 +174,7 @@ Blockfolio.getHoldings("XMR/BTC", (err, holdings) => {
 
 ### removeCoin(pair, callback)
 
-#### Completely remove a coin from your portfolio
+**Completely remove a coin from your portfolio**
 
 **pair** (String) : Token pair to remove from the portfolio (ie. `"XMR/BTC"`)
 
@@ -198,7 +211,7 @@ Blockfolio.getMarketDetails("XMR/BTC", "bittrex", (err, details) => {
 
 ### getCoinsList(callback)
 
-#### Get the whole list of coins supported by Blockfolio
+**Get the whole list of coins supported by Blockfolio**
 
 **callback(err, coins)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `coins` should contain an array of coins (otherwise, it will be the response body)
 
@@ -212,5 +225,5 @@ Blockfolio.getCoinsList((err, coins) => {
 ```
 
 License
---
+-------
 Distributed under the MIT License.

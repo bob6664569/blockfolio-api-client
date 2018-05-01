@@ -13,6 +13,7 @@ validity and can return new errors
 ### Added
 - getCoinsList, _validateTokenPair
 - BlockfolioAPI.createNew / _register for new accounts
+- Disclaimer
 
 ## [0.1.1] - 2018-04-30
 ### Added
