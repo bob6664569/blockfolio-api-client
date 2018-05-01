@@ -7,10 +7,10 @@
             should          = chai.should(),
             expect          = chai.expect;
 
-    const   Blockfolio   = require("../index");
+    const   Blockfolio      = require("../index");
 
 
-    const FAKE_TOKEN = "1915f3d2ef313e86";
+    const   FAKE_TOKEN      = "1915f3d2ef313e86";
 
     describe("Blockfolio API", function() {
         describe("Module Instanciation", function () {
@@ -19,7 +19,7 @@
             it("should be ok with a working token", function (done) {
                 try {
                     Blockfolio.init(FAKE_TOKEN, (err) => {
-                        if (err) return done(err);
+                        if (err) { return done(err); }
 
                         done();
                     });
