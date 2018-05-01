@@ -2,7 +2,11 @@
 
 ## [Unreleased]
 
-## [0.2.0] - 2018-04-30
+## [0.2.1] - 2018-05-01
+### Added
+- getAnnouncements, getVersion
+
+## [0.2.0] - 2018-05-01
 ### Changed
 - You must now call
 BlockfolioAPI.init(DEVICE_TOKEN, (blockfolio) => { ... }); and wrap

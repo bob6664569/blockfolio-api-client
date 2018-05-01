@@ -25,7 +25,7 @@ npm install blockfolio-api-client --save
 Usage
 -----
  1. Require the module
- 2. Call the `init` method with your `DEVICE8TOKEN` (you will find your
+ 2. Call the `init` method with your `DEVICE_TOKEN` (you will find your
  token on the Blockfolio app, in the bottom of the `Settings` page)
  3. Once initialized, you can use the following doc and access to all
  your Blockfolio data !
