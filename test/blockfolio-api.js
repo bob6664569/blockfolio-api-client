@@ -18,7 +18,7 @@
                     should.exist(err.message);
                     expect(err.message).to.equal("A valid CLIENT_TOKEN should be provided! (Have you called Blockfolio.init()?)");
                     should.not.exist(positions);
-                    done();
+                    return done();
                 });
             });
             // Expand timeout for initialization
@@ -28,10 +28,10 @@
                     Blockfolio.init(FAKE_TOKEN, (err) => {
                         if (err) { return done(err); }
 
-                        done();
+                        return done();
                     });
                 } catch (e) {
-                    done(e);
+                    return done(e);
                 }
             });
         });
@@ -39,22 +39,22 @@
             it("should convert properly XRP/BTC to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("XRP/BTC");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "XRP"});
-                done();
+                return done();
             });
             it("should convert properly BTC/USD to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC/USD");
                 expect(pair).to.be.deep.equal({base: "USD", token: "BTC"});
-                done();
+                return done();
             });
             it("should convert properly AEON to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("AEON");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "AEON"});
-                done();
+                return done();
             });
             it("should convert properly BTC-LTC to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC-LTC");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "LTC"});
-                done();
+                return done();
             });
         });
         describe("Endpoints", function () {
@@ -62,19 +62,19 @@
             this.timeout(10000);
             it("Get market details for an AEON/BTC", function (done) {
                 Blockfolio.getMarketDetails("AEON/BTC", "bittrex", (err, details) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
 
                     should.exist(details.ask);
                     expect(details.ask).to.be.a("string");
-                    done();
+                    return done();
                 });
             });
             it("Get available exchanges for this token", function (done) {
                 Blockfolio.getExchanges("AEON/BTC", (err, exchanges) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
 
                     expect(exchanges).to.be.an("array");
-                    done();
+                    return done();
                 });
             });
             it("Get available exchanges for an incorrect token", function (done) {
@@ -82,15 +82,15 @@
                     should.exist(err.message);
                     expect(err.message).to.equal("ZSKJD is not an available token on Blockfolio!");
                     should.not.exist(exchanges);
-                    done();
+                    return done();
                 });
             });
             it("Add a token pair to watch from Bittrex", function (done) {
                 Blockfolio.watchCoin("AEON/BTC", "bittrex", (err, res) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
 
                     expect(res).to.equal("success");
-                    done();
+                    return done();
                 });
             });
             it("Get the last price of an incorrect token on this exchange", function (done) {
@@ -98,7 +98,7 @@
                     should.exist(err.message);
                     expect(err.message).to.equal("EAZRREZREZ is not an available token on Blockfolio!");
                     should.not.exist(rPrice);
-                    done();
+                    return done();
                 });
             });
 
@@ -107,60 +107,60 @@
                 Blockfolio.getPrice("BTC/DSQFSDFDSF", "bittrex", (err, nPrice) => {
                     should.exist(err.message);
                     expect(err.message).to.equal("BTC is not an available in DSQFSDFDSF on Blockfolio!");
-                    done();
+                    return done();
                 });
             });
 
 
             it("Get the last price of AEON on this exchange", function (done) {
                 Blockfolio.getPrice("AEON/BTC", "bittrex", (err, cPrice) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
 
                     expect(cPrice).to.be.a("number");
-                    done();
+                    return done();
                 });
             });
             it("Add a BTC position on this pair", function (done) {
                 Blockfolio.addPosition(true, "AEON/BTC", "bittrex", 0.00018, 200, "AEON FTW", (err, res) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
 
                     expect(res).to.equal("success");
-                    done();
+                    return done();
                 });
             });
             it("Get the summary for current position", function (done) {
                 Blockfolio.getHoldings("AEON/BTC", (err, summary) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
 
                     should.exist(summary.holdingValueString);
                     expect(summary.holdingValueString).to.be.a("string");
-                    done();
+                    return done();
                 });
             });
             it("Get orders details for this position", function (done) {
                 Blockfolio.getPositions("AEON/BTC", (err, positions) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
 
                     should.exist(positions);
                     expect(positions).to.be.an("array");
-                    done();
+                    return done();
                 });
             });
             it("And then remove the coin from portfolio", function (done) {
                 Blockfolio.removeCoin("AEON/BTC", (err, res) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
 
                     expect(res).to.equal("success");
-                    done();
+                    return done();
                 });
             });
             it("Get actual positions", function (done) {
                 Blockfolio.getPositions((err, positions) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
 
                     should.exist(positions);
                     expect(positions).to.be.an("array");
-                    done();
+                    return done();
                 });
             });
         });
