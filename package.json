@@ -29,7 +29,6 @@
   },
   "homepage": "https://github.com/bob6664569/blockfolio-api-client#readme",
   "devDependencies": {
-    "bithound": "^1.7.0",
     "chai": "^4.1.2",
     "istanbul": "^0.4.5",
     "mocha": "^5.1.1"

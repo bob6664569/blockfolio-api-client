@@ -1,6 +1,14 @@
 # Changelog
 
 ## [Unreleased]
+- Options object for parameters passing on most endpoints
+- Default values & some automation on portfolio positions
+
+## [0.2.2] - 2018-05-02
+### Added
+- getDisposableDeviceToken... THANK YOU BLOCKFOLIO !
+### Changed
+- Warning on README : Token shown in the app are not useable since now
 
 ## [0.2.1] - 2018-05-01
 ### Added

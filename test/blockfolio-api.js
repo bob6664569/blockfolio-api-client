@@ -60,6 +60,12 @@
         describe("Endpoints", function () {
             // Expand timeout for network & API lentency
             this.timeout(10000);
+            it("Get a Disposable Device Token", function (done) {
+                Blockfolio.getDisposableDeviceToken(token => {
+                   should.exist(token);
+                   return done();
+                });
+            });
             it("Get market details for an AEON/BTC", function (done) {
                 Blockfolio.getMarketDetails("AEON/BTC", "bittrex", (err, details) => {
                     if (err) { return done(err); }

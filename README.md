@@ -6,6 +6,13 @@
 
 #### Non-official Node.JS API Client for Blockfolio
 
+Update
+------
+
+**BLOCKFOLIO TEAM JUST UPDATED THEIR APP TO AVOID THE DISPLAY OF THE REAL `DEVICE_TOKEN`, AND THEREFORE PREVENTING DEVELOPERS TO USE THIS CLIENT**
+
+**THANKS GOES TO : [@BlockfolioApp](https://twitter.com/BlockfolioApp)**
+
 Disclaimer
 ----------
 
@@ -16,8 +23,8 @@ Blockfolio datas, keep it safe and DON'T make it public.**
 
 Get the official Blockfolio app at [blockfolio.com](https://www.blockfolio.com/)
 
-Install
--------
+Installation
+------------
 ```sh
 npm install blockfolio-api-client --save
 ```
