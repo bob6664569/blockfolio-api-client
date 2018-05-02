@@ -4,6 +4,15 @@
 - Options object for parameters passing on most endpoints
 - Default values & some automation on portfolio positions
 
+## [0.2.3] - 2018-05-02
+### Added
+- getCurrencies, getStatus
+### Changed
+- Updated README
+- Added Signal API URL
+### Fixed
+- Code coverage
+
 ## [0.2.2] - 2018-05-02
 ### Added
 - getDisposableDeviceToken... THANK YOU BLOCKFOLIO !

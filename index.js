@@ -7,10 +7,11 @@
 
     const   PLATFORM      = "APIClient",
             API_URL       = "https://api-v0.blockfolio.com/rest/",
+            SIGNAL_API    = "https://signal-api.blockfolio.com/",
             MAGIC_TOKEN   = "edtopjhgn2345piuty89whqejfiobh89-2q453", // Common token to pseudo-authenticate API Client
             LOCALE        = "en-US",
             FIAT_CURRENCY = "usd";
 
-    module.exports = new Blockfolio(FIAT_CURRENCY, API_URL, MAGIC_TOKEN, LOCALE, PLATFORM);
+    module.exports = new Blockfolio(FIAT_CURRENCY, API_URL, MAGIC_TOKEN, LOCALE, PLATFORM, SIGNAL_API);
 
 })();

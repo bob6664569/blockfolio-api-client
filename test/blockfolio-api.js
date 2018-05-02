@@ -12,6 +12,39 @@
     const   FAKE_TOKEN      = "1915f3d2ef313e86";
 
     describe("Blockfolio API", function() {
+        describe("General", function () {
+            it("Get the API version", function (done) {
+                Blockfolio.getVersion((err, version) => {
+                    if (err) { return done(err); }
+                    should.exist(version);
+                    expect(version).to.be.a("number");
+                    return done();
+                });
+            });
+            it("Get the system status of the API", function (done) {
+                Blockfolio.getStatus((err, statusMsg) => {
+                    if (err) { return done(err); }
+                    should.exist(statusMsg);
+                    expect(statusMsg).to.be.a("string");
+                    return done();
+                });
+            });
+            it("Get the announcements from SIGNAL", function (done) {
+                Blockfolio.getAnnouncements((err, announcements) => {
+                    if (err) { return done(err); }
+                    should.exist(announcements);
+                    expect(announcements).to.be.an("array");
+                    return done();
+                });
+            });
+            it("should fail at registering an already activated DEVICE_TOKEN", function (done) {
+                Blockfolio._register(FAKE_TOKEN, (err, response) => {
+                    should.exist(err.message);
+                    should.not.exist(response);
+                    return done();
+                });
+            });
+        });
         describe("Module Instanciation", function () {
             it("a protected method called without it should return an error", function (done) {
                 Blockfolio.getPositions("BTC/USD", (err, positions) => {
@@ -36,6 +69,11 @@
             });
         });
         describe("Tools", function () {
+            it("should return a random token", function (done) {
+                const generatedToken = Blockfolio.utils.generateClientToken();
+                expect(generatedToken).to.be.a("string");
+                return done();
+            });
             it("should convert properly XRP/BTC to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("XRP/BTC");
                 expect(pair).to.be.deep.equal({base: "BTC", token: "XRP"});
@@ -60,6 +98,22 @@
         describe("Endpoints", function () {
             // Expand timeout for network & API lentency
             this.timeout(10000);
+            it("Get the currencies list", function (done) {
+                Blockfolio.getCurrencies((err, currencies) => {
+                    if (err) { return done(err); }
+                    should.exist(currencies);
+                    expect(currencies).to.be.an("array");
+                    return done();
+                });
+            });
+            it("Get the coins list", function (done) {
+                Blockfolio.getCoinsList((err, coins) => {
+                    if (err) { return done(err); }
+                    should.exist(coins);
+                    expect(coins).to.be.an("array");
+                    return done();
+                });
+            });
             it("Get a Disposable Device Token", function (done) {
                 Blockfolio.getDisposableDeviceToken(token => {
                    should.exist(token);

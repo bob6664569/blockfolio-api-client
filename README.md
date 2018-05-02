@@ -6,13 +6,6 @@
 
 #### Non-official Node.JS API Client for Blockfolio
 
-Update
-------
-
-**BLOCKFOLIO TEAM JUST UPDATED THEIR APP TO AVOID THE DISPLAY OF THE REAL `DEVICE_TOKEN`, AND THEREFORE PREVENTING DEVELOPERS TO USE THIS CLIENT**
-
-**THANKS GOES TO : [@BlockfolioApp](https://twitter.com/BlockfolioApp)**
-
 Disclaimer
 ----------
 
@@ -22,6 +15,19 @@ Blockfolio datas, keep it safe and DON'T make it public.**
 **This module is NOT provided by Blockfolio.**
 
 Get the official Blockfolio app at [blockfolio.com](https://www.blockfolio.com/)
+
+Update
+------
+
+**(2018-05-02) BLOCKFOLIO TEAM PUSHED AN UPDATE TO HIDE THE REAL
+`DEVICE_TOKEN` UNDER THE `Settings` MENU, IN ORDER TO PREVENT
+DEVELOPERS TO USE THIS CLIENT. BECAUSE THEY OPENLY DONT SUPPORT
+THIS DEVELOPMENT, I'M NOT ALLOWED TO DISCLOSE ANY OF THE CURRENT WAYS
+TO GET THE PROPER `DEVICE_TOKEN`.**
+
+**=> DON'T UPDATE, OR DO YOUR OWN RESEARCH TO FIND IT AND USE THE API**
+
+**=> COMPLAINS GOES TO : [@BlockfolioApp](https://twitter.com/BlockfolioApp) :tada:**
 
 Installation
 ------------
@@ -55,6 +61,19 @@ Blockfolio.init("BLOCKFOLIO_DEVICE_TOKEN", (err) => {
 
 Methods
 -------
+
+- [addPosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback) (buy, pair, exchange, initPrice, amount, note, callback)
+- [watchCoin](#watchcoinpair-exchange-callback) (pair, exchange, callback)
+- [getPrice](#getpricepair-exchange-callback) (pair, exchange, callback)
+- [getExchanges](#getexchangespair-callback) (pair, callback)
+- [getPositions](#getpositionspair_or_callback-callback) (pair_or_callback[, callback])
+- [getHoldings](#getholdingspair-callback) (pair, callback)
+- [removeCoin](#removecoinpair-callback) (pair, callback)
+- [getMarketDetails](#getmarketdetailspair-exchange-callback) (pair, exchange, callback)
+- [getCoinsList](#getcoinslistcallback) (callback)
+- [getCurrencies](#getcurrenciescallback) (callback)
+
+
 ### addPosition(buy, pair, exchange, initPrice, amount, note, callback)
 
 **Add a new position to your portfolio.**
@@ -232,6 +251,23 @@ Blockfolio.getCoinsList((err, coins) => {
     if (err) throw(err);
 
     console.log(coins);
+});
+```
+
+### getCurrencies(callback)
+
+**Get the whole list of supported currencies**
+
+**callback(err, currencies)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `currencies` should contain an array of currencies objects (otherwise, it will be the response body)
+
+#### Example
+```javascript
+Blockfolio.getCurrencies((err, currencies) => {
+    if (err) throw(err);
+
+    currencies.forEach(currency => {
+        console.log(`${currency.fullName} (${currency.symbol}) is abbreviated ${currency.currency}.`);
+    });
 });
 ```
 
