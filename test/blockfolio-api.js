@@ -94,6 +94,16 @@
                 expect(pair).to.be.deep.equal({base: "BTC", token: "LTC"});
                 return done();
             });
+            it("should convert properly BTC-DASH to a pair struct", function (done) {
+                const pair = Blockfolio.utils.parseToken("BTC-DASH");
+                expect(pair).to.be.deep.equal({base: "BTC", token: "DASH"});
+                return done();
+            });
+            it("should convert properly BTC-BCH to a pair struct", function (done) {
+                const pair = Blockfolio.utils.parseToken("BTC-BCH");
+                expect(pair).to.be.deep.equal({base: "BTC", token: "BCH"});
+                return done();
+            });
         });
         describe("Endpoints", function () {
             // Expand timeout for network & API lentency
