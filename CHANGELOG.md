@@ -4,6 +4,10 @@
 - Options object for parameters passing on most endpoints
 - Default values & some automation on portfolio positions
 
+## [0.2.4] - 2018-05-03
+### Added
+- token check displaying an hint if the used token is a disposable one
+
 ## [0.2.3] - 2018-05-02
 ### Added
 - getCurrencies, getStatus

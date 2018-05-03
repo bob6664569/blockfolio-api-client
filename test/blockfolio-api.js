@@ -54,6 +54,12 @@
                     return done();
                 });
             });
+            it("should fail to initialize with a disposable token", function (done) {
+                Blockfolio.init("40f027b891222cdf7fe7d7390a29e4bb5c79ea7adbab660c855b2d6c603de2d710c10aebcc4ee76c6da4402457cbfd50", (err) => {
+                    should.exist(err.message);
+                    return done();
+                });
+            });
             // Expand timeout for initialization
             this.timeout(5000);
             it("should be ok with a working token", function (done) {
