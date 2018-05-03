@@ -6,6 +6,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/bob6664569/blockfolio-api-client/badge.svg?targetFile=package.json)](https://snyk.io/test/github/bob6664569/blockfolio-api-client?targetFile=package.json)
 [![npm](https://img.shields.io/npm/v/blockfolio-api-client.svg)](https://www.npmjs.com/package/blockfolio-api-client)
 [![npm](https://img.shields.io/npm/dt/blockfolio-api-client.svg)](https://www.npmjs.com/package/blockfolio-api-client)
+
 [![Donate with Bitcoin](https://en.cryptobadges.io/badge/micro/1LhMTZWBnRq6NTwWegYKdMUAiH9LrWEvyd)](https://en.cryptobadges.io/donate/1LhMTZWBnRq6NTwWegYKdMUAiH9LrWEvyd)
 [![Donate with Litecoin](https://en.cryptobadges.io/badge/micro/LfCBBwQid43sbJ6Ta5uvJsbF5NijXrUsvy)](https://en.cryptobadges.io/donate/LfCBBwQid43sbJ6Ta5uvJsbF5NijXrUsvy)
 [![Donate with Ethereum](https://en.cryptobadges.io/badge/micro/0x4c3e4ab76bef5bd75b9e02945bec46ba90332876)](https://en.cryptobadges.io/donate/0x4c3e4ab76bef5bd75b9e02945bec46ba90332876)
@@ -28,8 +29,8 @@ Update
 **(2018-05-02) BLOCKFOLIO TEAM PUSHED AN UPDATE TO HIDE THE REAL
 `DEVICE_TOKEN`. ONLY A DISPOSABLE ONE IS NOW FOUND UNDER THE `Settings`
 MENU, IN ORDER TO PREVENT DEVELOPERS TO USE THIS CLIENT. BECAUSE THEY
-OPENLY DONT SUPPORT THIS DEVELOPMENT, I'M NOT ALLOWED TO DISCLOSE ANY
-OF THE CURRENT WAYS TO GET THE PROPER `DEVICE_TOKEN`.**
+OPENLY DONT SUPPORT THIS DEVELOPMENT, I'M THEREFORE NOT ALLOWED TO
+DISCLOSE ANY OF THE CURRENT WAYS TO GET THE PROPER `DEVICE_TOKEN`.**
 
 **=> DON'T UPDATE BLOCKFOLIO, OR DO YOUR OWN RESEARCH TO FIND THE
 `DEVICE_TOKEN` AND USE THE API**
