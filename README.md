@@ -23,20 +23,6 @@ Blockfolio datas, keep it safe and DON'T make it public.**
 
 Get the official Blockfolio app at [blockfolio.com](https://www.blockfolio.com/)
 
-Update
-------
-
-**(2018-05-02) BLOCKFOLIO TEAM PUSHED AN UPDATE TO HIDE THE REAL
-`DEVICE_TOKEN`. ONLY A DISPOSABLE ONE IS NOW FOUND UNDER THE `Settings`
-MENU, IN ORDER TO PREVENT DEVELOPERS TO USE THIS CLIENT. BECAUSE THEY
-OPENLY DONT SUPPORT THIS DEVELOPMENT, I'M THEREFORE NOT ALLOWED TO
-DISCLOSE ANY OF THE CURRENT WAYS TO GET THE PROPER `DEVICE_TOKEN`.**
-
-**=> DON'T UPDATE BLOCKFOLIO, OR DO YOUR OWN RESEARCH TO FIND THE
-`DEVICE_TOKEN` AND USE THE API**
-
-**=> COMPLAINS GOES TO : [@BlockfolioApp](https://twitter.com/BlockfolioApp) :tada:**
-
 Installation
 ------------
 ```sh
@@ -46,67 +32,60 @@ npm install blockfolio-api-client --save
 Usage
 -----
  1. Require the module
- 2. Call the `init` method with your `DEVICE_TOKEN` (you will find your
- token on the Blockfolio app, in the bottom of the `Settings` page)
+ 2. Call the `init` method with your `DEVICE_TOKEN`
  3. Once initialized, you can use the following doc and access to all
  your Blockfolio data !
 
 ```javascript
 const Blockfolio = require("blockfolio-api-client");
 
-Blockfolio.init("BLOCKFOLIO_DEVICE_TOKEN", (err) => {
-    if (err) return console.error(err);
-
-    // Use any of the following methods to play with your Blockfolio datas, here : getPositions
-    Blockfolio.getPositions((err, positions) => {
-        if (err) return console.error(err);
-
+Blockfolio
+    .init("BLOCKFOLIO_DEVICE_TOKEN")
+    .then(() => { return Blockfolio.getPositions(); })
+    .then((positions) => {
         console.log(positions);
+    }).catch((err) => {
+        console.error(err);
     });
-
-});
 ```
 
 Methods
 -------
 
-- [addPosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback) (buy, pair, exchange, initPrice, amount, note, callback)
-- [watchCoin](#watchcoinpair-exchange-callback) (pair, exchange, callback)
-- [getPrice](#getpricepair-exchange-callback) (pair, exchange, callback)
-- [getExchanges](#getexchangespair-callback) (pair, callback)
-- [getPositions](#getpositionspair_or_callback-callback) (pair_or_callback[, callback])
-- [getHoldings](#getholdingspair-callback) (pair, callback)
-- [removeCoin](#removecoinpair-callback) (pair, callback)
-- [getMarketDetails](#getmarketdetailspair-exchange-callback) (pair, exchange, callback)
-- [getCoinsList](#getcoinslistcallback) (callback)
-- [getCurrencies](#getcurrenciescallback) (callback)
+- [addPosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback)
+- [watchCoin](#watchcoinpair-exchange-callback)
+- [getPrice](#getpricepair-exchange-callback)
+- [getExchanges](#getexchangespair-callback)
+- [getPositions](#getpositionspair_or_callback-callback)
+- [getHoldings](#getholdingspair-callback)
+- [removeCoin](#removecoinpair-callback)
+- [getMarketDetails](#getmarketdetailspair-exchange-callback)
+- [getCoinsList](#getcoinslistcallback)
+- [getCurrencies](#getcurrenciescallback)
 
 
-### addPosition(buy, pair, exchange, initPrice, amount, note, callback)
+### addPosition(pair\[, options, callback\])
 
 **Add a new position to your portfolio.**
 
-**buy** (Boolean) : `TRUE` is buy, `FALSE` is sell
-
-**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
-
-**exchange** (String) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
-
-**initPrice** (Number) : Price of token pair when the order is executed (see `getPrice` to get the latest price for a specific token pair on a specific exchange)
-
-**amount** (Number) : Quantity of tokens in the order
-
-**note** (String) : Note to add to the position in Blockfolio
-
-**callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body)
+- **pair** (String or Pair Object) : Token pair of the position (ie. `"XMR/BTC"`)
+- **options** : if no option is provided, then the coin is just added to the watchlist
+  - **mode** (String - default: "sell") : `buy` or `sell`
+  - **exchange** (String - default to the top exchange) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
+  - **initPrice** (Number - default to last price) : Price of token pair when the order is executed (see `getPrice` to get the latest price for a specific token pair on a specific exchange)
+  - **amount** (Number - default 0) : Quantity of tokens in the position
+  - **note** (String - default empty) : Note to add to the position in Blockfolio
+- **callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body) - you can also use directly the result as a Promise
 
 #### Example
 ```javascript
-Blockfolio.addPosition(true, "XMR/BTC", "bittrex", 0.015, 42, "I really like Monero !", (err, res) => {
-    if (err) throw(err);
-
-    // 42 XMR from Bittrex added to your portfolio at the price of 0.015BTC each !
-});
+Blockfolio.addPosition("XMR/BTC", {
+    mode: "buy",
+    exchange: "bittrex",
+    amount: 42,
+    note: "I really like Monero !"}).then(() => {
+    console.log("42 XMR successfully added to your Blockfolio at the current price from Bittrex!"
+}).catch((err) => { console.error(err); });
 ```
 
 ### watchCoin(pair, exchange, callback)

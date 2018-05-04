@@ -58,7 +58,7 @@
                 Blockfolio.init("40f027b891222cdf7fe7d7390a29e4bb5c79ea7adbab660c855b2d6c603de2d710c10aebcc4ee76c6da4402457cbfd50", (err) => {
                     should.exist(err.message);
                     return done();
-                });
+                }).catch((err) => { return done(err); });
             });
             // Expand timeout for initialization
             this.timeout(5000);
@@ -131,7 +131,7 @@
                 });
             });
             it("Get a Disposable Device Token", function (done) {
-                Blockfolio.getDisposableDeviceToken(token => {
+                Blockfolio.getDisposableDeviceToken().then((token) => {
                    should.exist(token);
                    return done();
                 });
@@ -162,11 +162,9 @@
                 });
             });
             it("Add a token pair to watch from Bittrex", function (done) {
-                Blockfolio.watchCoin("AEON/BTC", "bittrex", (err, res) => {
-                    if (err) { return done(err); }
-
+                Blockfolio.watchCoin("AEON/BTC", "bittrex").then(() => {
                     return done();
-                });
+                }).catch((err) => { return done(err); });
             });
             it("... should works with a promise too", function (done) {
                 Blockfolio.watchCoin("AEON/BTC", "bittrex").then(() => {
@@ -176,7 +174,9 @@
                 });
             });
             it("Get the last price of an incorrect token on this exchange", function (done) {
-                Blockfolio.getPrice("EAZRREZREZ/BTC", "bittrex", (err, rPrice) => {
+                Blockfolio.getPrice("EAZRREZREZ/BTC", {
+                    exchange: "bittrex"
+                }, (err, rPrice) => {
                     should.exist(err.message);
                     expect(err.message).to.equal("EAZRREZREZ is not an available token on Blockfolio!");
                     should.not.exist(rPrice);
@@ -186,7 +186,9 @@
 
 
             it("... and with a valid token, but an incorrect base", function (done) {
-                Blockfolio.getPrice("BTC/DSQFSDFDSF", "bittrex", (err, nPrice) => {
+                Blockfolio.getPrice("BTC/DSQFSDFDSF", {
+                    exchange: "bittrex"
+                }, (err, nPrice) => {
                     should.exist(err.message);
                     expect(err.message).to.equal("BTC is not an available in DSQFSDFDSF on Blockfolio!");
                     return done();
@@ -195,7 +197,9 @@
 
 
             it("Get the last price of AEON on this exchange", function (done) {
-                Blockfolio.getPrice("AEON/BTC", "bittrex", (err, cPrice) => {
+                Blockfolio.getPrice("AEON/BTC", {
+                    exchange: "bittrex"
+                }, (err, cPrice) => {
                     if (err) { return done(err); }
 
                     expect(cPrice).to.be.a("number");
