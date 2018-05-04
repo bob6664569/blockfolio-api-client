@@ -165,8 +165,14 @@
                 Blockfolio.watchCoin("AEON/BTC", "bittrex", (err, res) => {
                     if (err) { return done(err); }
 
-                    expect(res).to.equal("success");
                     return done();
+                });
+            });
+            it("... should works with a promise too", function (done) {
+                Blockfolio.watchCoin("AEON/BTC", "bittrex").then(() => {
+                    return done();
+                }).catch((err) => {
+                    return done(err);
                 });
             });
             it("Get the last price of an incorrect token on this exchange", function (done) {
@@ -202,10 +208,9 @@
                     price: 0.00018,
                     amount: 200,
                     note: "AEON FTW"
-                }, (err, res) => {
+                }, (err) => {
                     if (err) { return done(err); }
 
-                    expect(res).to.equal("success");
                     return done();
                 });
             });
