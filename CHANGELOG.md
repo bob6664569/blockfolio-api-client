@@ -4,6 +4,14 @@
 - Options object for parameters passing on most endpoints
 - Default values & some automation on portfolio positions
 
+## [1.0.0-beta1] - 2018-05-04
+### Added
+- Every asynchronous method now returns a promise, callbacks are optional
+- removePosition
+### Changed
+- Callbacks are now optional
+- Promisified methods now takes fewer arguments, and use an option object for optional settings
+
 ## [0.2.4] - 2018-05-03
 ### Added
 - token check displaying an hint if the used token is a disposable one

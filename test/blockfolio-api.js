@@ -183,8 +183,6 @@
                     return done();
                 });
             });
-
-
             it("... and with a valid token, but an incorrect base", function (done) {
                 Blockfolio.getPrice("BTC/DSQFSDFDSF", {
                     exchange: "bittrex"
@@ -194,8 +192,6 @@
                     return done();
                 });
             });
-
-
             it("Get the last price of AEON on this exchange", function (done) {
                 Blockfolio.getPrice("AEON/BTC", {
                     exchange: "bittrex"
@@ -219,24 +215,28 @@
                 });
             });
             it("Get the summary for current position", function (done) {
-                Blockfolio.getHoldings("AEON/BTC", (err, summary) => {
-                    if (err) { return done(err); }
-
+                Blockfolio.getHoldings("AEON/BTC").then((summary) => {
                     should.exist(summary.holdingValueString);
                     expect(summary.holdingValueString).to.be.a("string");
                     return done();
-                });
+                }).catch((err) => { return done(err); });
             });
-            it("Get orders details for this position", function (done) {
-                Blockfolio.getPositions("AEON/BTC", (err, positions) => {
-                    if (err) { return done(err); }
 
+            var posId = 0;
+            it("Get orders details for this position", function (done) {
+                Blockfolio.getPositions({ pair: "AEON/BTC" }).then((positions) => {
                     should.exist(positions);
                     expect(positions).to.be.an("array");
+                    posId = positions[0].positionId;
                     return done();
-                });
+                }).catch((err) => { return done(err); });
             });
-            it("And then remove the coin from portfolio", function (done) {
+            it("Remove the just added position", function (done) {
+                Blockfolio.removePosition(posId).then(() => {
+                    return done();
+                }).catch((err) => { return done(err); });
+            });
+            it("And then remove completely the coin from portfolio", function (done) {
                 Blockfolio.removeCoin("AEON/BTC", (err, res) => {
                     if (err) { return done(err); }
 
@@ -244,7 +244,8 @@
                     return done();
                 });
             });
-            it("Get actual positions", function (done) {
+
+            it("Get actual positions left", function (done) {
                 Blockfolio.getPositions((err, positions) => {
                     if (err) { return done(err); }
 

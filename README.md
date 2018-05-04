@@ -36,14 +36,35 @@ Usage
  3. Once initialized, you can use the following doc and access to all
  your Blockfolio data !
 
+#### Example
 ```javascript
 const Blockfolio = require("blockfolio-api-client");
 
 Blockfolio
+    // Initialize the client with your DEVICE_TOKEN
     .init("BLOCKFOLIO_DEVICE_TOKEN")
-    .then(() => { return Blockfolio.getPositions(); })
-    .then((positions) => {
-        console.log(positions);
+
+    // Add a position of 42 XMR/BTC on the top exchange, at the current price
+    .then(() => {
+        return Blockfolio.addPosition("XMR/BTC", {
+            amount: 42,
+            note: "I love XMR!"
+        });
+
+    // Get the positions you got for XMR
+    }).then(() => {
+        return Blockfolio.getPositions({ pair: "XMR" });
+
+    // Then remove the first one (last added)
+    }).then((positions) => {
+        console.log("I just added a position of XMR/BTC on the top exchange, there it is:");
+        console.log(positions[0]);
+        // Now delete this position:
+        return Blockfolio.removePosition(positions[0].positionId);
+
+    // TADA!
+    }).then(() => {
+        console.log("Position successfully removed!");
     }).catch((err) => {
         console.error(err);
     });
