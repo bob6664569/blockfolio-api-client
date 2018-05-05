@@ -26,7 +26,7 @@ Get the official Blockfolio app at [blockfolio.com](https://www.blockfolio.com/)
 Installation
 ------------
 ```sh
-npm install blockfolio-api-client --save
+npm install blockfolio-api-client@beta --save
 ```
 
 Usage
@@ -36,7 +36,11 @@ Usage
  3. Once initialized, you can use the following doc and access to all
  your Blockfolio data !
 
-#### Example
+Examples
+--------
+
+##### Add a position, fetch it then remove it (Promises-style)
+
 ```javascript
 const Blockfolio = require("blockfolio-api-client");
 
@@ -70,10 +74,33 @@ Blockfolio
     });
 ```
 
+#### Get the list of your global holdings (old callback-style)
+```javascript
+const Blockfolio = require("blockfolio-api-client");
+
+Blockfolio
+
+    // Initialize the client with your DEVICE_TOKEN (disableCoinCheck to skip coins sync)
+    .init("BLOCKFOLIO_DEVICE_TOKEN", { disableCoinCheck: true }, (err) => {
+        if (err) { return console.error(err); }
+
+        // Call getPositions with only a callback to fetch all global positions
+        Blockfolio.getPositions((err, positions) => {
+            if (err) { return console.error(err); }
+
+            // Display list of current positions
+            positions.forEach((position) => {
+                console.log(`Got ${position.quantity} ${position.coin} for a total BTC value of ${position.holdingValueBtc}.`);
+            });
+        });
+    });
+```
+
 Methods
 -------
 
 - [addPosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback)
+- [removePosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback)
 - [watchCoin](#watchcoinpair-exchange-callback)
 - [getPrice](#getpricepair-exchange-callback)
 - [getExchanges](#getexchangespair-callback)
@@ -104,9 +131,12 @@ Blockfolio.addPosition("XMR/BTC", {
     mode: "buy",
     exchange: "bittrex",
     amount: 42,
-    note: "I really like Monero !"}).then(() => {
+    note: "I really like Monero !"
+}).then(() => {
     console.log("42 XMR successfully added to your Blockfolio at the current price from Bittrex!"
-}).catch((err) => { console.error(err); });
+}).catch((err) => { 
+    console.error(err);
+});
 ```
 
 ### watchCoin(pair, exchange, callback)

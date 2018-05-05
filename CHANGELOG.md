@@ -1,8 +1,14 @@
 # Changelog
 
 ## [Unreleased]
-- Options object for parameters passing on most endpoints
-- Default values & some automation on portfolio positions
+
+## [1.0.0-beta2] - 2018-05-05
+### Added
+- getPortfolioSummary
+- more examples in the README
+- enhanced coverage
+### Changed
+- Promises everywhere
 
 ## [1.0.0-beta1] - 2018-05-04
 ### Added

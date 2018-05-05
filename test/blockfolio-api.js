@@ -11,6 +11,9 @@
 
     const   FAKE_TOKEN      = "1915f3d2ef313e86";
 
+    // Enable regexps for chai
+    chai.use(require('chai-match'));
+
     describe("Blockfolio API", function() {
         describe("General", function () {
             it("Get the API version", function (done) {
@@ -46,7 +49,7 @@
             });
         });
         describe("Module Instanciation", function () {
-            it("a protected method called without it should return an error", function (done) {
+            it("getPositions called without it should return an error", function (done) {
                 Blockfolio.getPositions("BTC/USD", (err, positions) => {
                     should.exist(err.message);
                     expect(err.message).to.equal("A valid CLIENT_TOKEN should be provided! (Have you called Blockfolio.init()?)");
@@ -54,11 +57,57 @@
                     return done();
                 });
             });
+            it("getMarketDetails called without it should return an error", function (done) {
+                Blockfolio.getMarketDetails("BTC/USD").then(() => {
+                    return done(new Error("Should not go here without a CLIENT_TOKEN!"));
+                }).catch((err) => {
+                    should.exist(err.message);
+                    expect(err.message).to.equal("A valid CLIENT_TOKEN should be provided! (Have you called Blockfolio.init()?)");
+                    return done();
+                });
+            });
+            it("removeCoin called without it should return an error", function (done) {
+                Blockfolio.removeCoin("BTC/USD").then(() => {
+                    return done(new Error("Should not go here without a CLIENT_TOKEN!"));
+                }).catch((err) => {
+                    should.exist(err.message);
+                    expect(err.message).to.equal("A valid CLIENT_TOKEN should be provided! (Have you called Blockfolio.init()?)");
+                    return done();
+                });
+            });
+            it("getHoldings called without it should return an error", function (done) {
+                Blockfolio.getHoldings("BTC/USD").then(() => {
+                    return done(new Error("Should not go here without a CLIENT_TOKEN!"));
+                }).catch((err) => {
+                    should.exist(err.message);
+                    expect(err.message).to.equal("A valid CLIENT_TOKEN should be provided! (Have you called Blockfolio.init()?)");
+                    return done();
+                });
+            });
+            it("getPortfolioSummary called without it should return an error", function (done) {
+                Blockfolio.getPortfolioSummary().then(() => {
+                    return done(new Error("Should not go here without a CLIENT_TOKEN!"));
+                }).catch((err) => {
+                    should.exist(err.message);
+                    expect(err.message).to.equal("A valid CLIENT_TOKEN should be provided! (Have you called Blockfolio.init()?)");
+                    return done();
+                });
+            });
             it("should fail to initialize with a disposable token", function (done) {
                 Blockfolio.init("40f027b891222cdf7fe7d7390a29e4bb5c79ea7adbab660c855b2d6c603de2d710c10aebcc4ee76c6da4402457cbfd50", (err) => {
                     should.exist(err.message);
                     return done();
+                });
+            });
+            it("should initialize quickly with coin checks disabled", function (done) {
+                Blockfolio.init(FAKE_TOKEN, { disableCoinCheck: true }).then(() => {
+                    return done();
                 }).catch((err) => { return done(err); });
+            });
+            it("should fail to register with an existing token", function (done) {
+                Blockfolio._register(FAKE_TOKEN).then(() => {
+                    return done(new Error("Should not pass"));
+                }).catch((err) => { should.exist(err.message); return done(); });
             });
             // Expand timeout for initialization
             this.timeout(5000);
@@ -113,7 +162,14 @@
         });
         describe("Endpoints", function () {
             // Expand timeout for network & API lentency
-            this.timeout(10000);
+            this.timeout(30000);
+            it("Get the portfolio summary", function (done) {
+                Blockfolio.getPortfolioSummary().then((summary) => {
+                    should.exist(summary);
+                    expect(summary.btcValue).to.be.a("number");
+                    return done();
+                }).catch((err) => { return done(err); });
+            });
             it("Get the currencies list", function (done) {
                 Blockfolio.getCurrencies((err, currencies) => {
                     if (err) { return done(err); }
@@ -133,17 +189,27 @@
             it("Get a Disposable Device Token", function (done) {
                 Blockfolio.getDisposableDeviceToken().then((token) => {
                    should.exist(token);
+                   expect(token).to.match(/[a-f0-9]{96}/);
                    return done();
                 });
             });
-            it("Get market details for an AEON/BTC", function (done) {
-                Blockfolio.getMarketDetails("AEON/BTC", "bittrex", (err, details) => {
+            it("Get market details for an AEON/BTC on Bittrex", function (done) {
+                Blockfolio.getMarketDetails("AEON/BTC", {
+                    exchange: "bittrex"
+                }, (err, details) => {
                     if (err) { return done(err); }
 
                     should.exist(details.ask);
                     expect(details.ask).to.be.a("string");
                     return done();
                 });
+            });
+            it("Get market details for an LTC/BTC on the top exchange", function (done) {
+                Blockfolio.getMarketDetails("LTC/BTC").then((details) => {
+                    should.exist(details.ask);
+                    expect(details.ask).to.be.a("string");
+                    return done();
+                }).catch((err) => { return done(err); });
             });
             it("Get available exchanges for this token", function (done) {
                 Blockfolio.getExchanges("AEON/BTC", (err, exchanges) => {
@@ -154,20 +220,29 @@
                 });
             });
             it("Get available exchanges for an incorrect token", function (done) {
-                Blockfolio.getExchanges("ZSKJD/BTC", (err, exchanges) => {
+                Blockfolio.getExchanges("ZSKJD/BTC").then((exchanges) => {
+                    should.not.exist(exchanges);
+                }).catch((err) => {
                     should.exist(err.message);
                     expect(err.message).to.equal("ZSKJD is not an available token on Blockfolio!");
-                    should.not.exist(exchanges);
                     return done();
                 });
             });
             it("Add a token pair to watch from Bittrex", function (done) {
-                Blockfolio.watchCoin("AEON/BTC", "bittrex").then(() => {
+                Blockfolio.watchCoin("AEON/BTC", "bittrex", (err) => {
+                    if (err) return done(err);
+                    return done();
+                });
+            });
+            it("Watch LTC/BTC from the top exchange", function (done) {
+                Blockfolio.watchCoin("LTC/BTC").then(() => {
                     return done();
                 }).catch((err) => { return done(err); });
             });
             it("... should works with a promise too", function (done) {
-                Blockfolio.watchCoin("AEON/BTC", "bittrex").then(() => {
+                Blockfolio.watchCoin("AEON/BTC", {
+                    exchange: "bittrex"
+                }).then(() => {
                     return done();
                 }).catch((err) => {
                     return done(err);
