@@ -4,6 +4,10 @@
 - Options object for parameters passing on most endpoints
 - Default values & some automation on portfolio positions
 
+## [0.2.5] - 2018-05-04
+### Fixed
+- sell mode for addPosition
+
 ## [0.2.4] - 2018-05-03
 ### Added
 - token check displaying an hint if the used token is a disposable one
