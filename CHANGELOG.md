@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [1.0.0-beta3] - 2018-05-09
+### Added
+- getAlerts, addAlert, removeAlert
+- Some checks for arguments on other methods
+
 ## [1.0.0-beta2] - 2018-05-05
 ### Added
 - getPortfolioSummary

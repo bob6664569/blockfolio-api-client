@@ -239,6 +239,26 @@
                     return done();
                 }).catch((err) => { return done(err); });
             });
+            it("Add an alert when LTC/EUR crosses 200", function (done) {
+                Blockfolio.addAlert("LTC/EUR", {
+                    above: 200
+                }).then(() => {
+                    return done();
+                }).catch((err) => { return done(err); });
+            });
+            let alertToDelete = 1;
+            it("Get the alerts for LTC/EUR", function (done) {
+                Blockfolio.getAlerts("LTC/EUR").then((alerts) => {
+                    expect(alerts).to.be.an("array");
+                    alertToDelete = alerts[0].alertId;
+                    return done();
+                }).catch((err) => { return done(err); });
+            });
+            it("Remove the just added alert", function (done) {
+                Blockfolio.removeAlert(alertToDelete).then(() => {
+                    return done();
+                }).catch((err) => { return done(err); });
+            });
             it("... should works with a promise too", function (done) {
                 Blockfolio.watchCoin("AEON/BTC", {
                     exchange: "bittrex"

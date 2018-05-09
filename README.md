@@ -99,14 +99,17 @@ Blockfolio
 Methods
 -------
 
+- [getPositions](#getpositionspair_or_callback-callback)
 - [addPosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback)
 - [removePosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback)
 - [watchCoin](#watchcoinpair-exchange-callback)
+- [removeCoin](#removecoinpair-callback)
 - [getPrice](#getpricepair-exchange-callback)
 - [getExchanges](#getexchangespair-callback)
-- [getPositions](#getpositionspair_or_callback-callback)
+- [addAlert](#addalertspair-options_or_callback-callback)
+- [removeAlert](#removealertalertid)
+- [getAlerts](#getalertspair-callback)
 - [getHoldings](#getholdingspair-callback)
-- [removeCoin](#removecoinpair-callback)
 - [getMarketDetails](#getmarketdetailspair-exchange-callback)
 - [getCoinsList](#getcoinslistcallback)
 - [getCurrencies](#getcurrenciescallback)
