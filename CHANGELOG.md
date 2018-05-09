@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [1.0.0-beta4] - 2018-05-09
+### Added
+- pauseAlert, startAlert, pauseAllAlerts, startAllAlerts
+### Changed
+- reordering tests
+
 ## [1.0.0-beta3] - 2018-05-09
 ### Added
 - getAlerts, addAlert, removeAlert

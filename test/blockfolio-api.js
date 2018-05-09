@@ -110,7 +110,7 @@
                 }).catch((err) => { should.exist(err.message); return done(); });
             });
             // Expand timeout for initialization
-            this.timeout(5000);
+            this.timeout(30000);
             it("should be ok with a working token", function (done) {
                 try {
                     Blockfolio.init(FAKE_TOKEN, (err) => {
@@ -163,190 +163,272 @@
         describe("Endpoints", function () {
             // Expand timeout for network & API lentency
             this.timeout(30000);
-            it("Get the portfolio summary", function (done) {
-                Blockfolio.getPortfolioSummary().then((summary) => {
-                    should.exist(summary);
-                    expect(summary.btcValue).to.be.a("number");
-                    return done();
-                }).catch((err) => { return done(err); });
-            });
-            it("Get the currencies list", function (done) {
-                Blockfolio.getCurrencies((err, currencies) => {
-                    if (err) { return done(err); }
-                    should.exist(currencies);
-                    expect(currencies).to.be.an("array");
-                    return done();
-                });
-            });
-            it("Get the coins list", function (done) {
-                Blockfolio.getCoinsList((err, coins) => {
-                    if (err) { return done(err); }
-                    should.exist(coins);
-                    expect(coins).to.be.an("array");
-                    return done();
-                });
-            });
-            it("Get a Disposable Device Token", function (done) {
-                Blockfolio.getDisposableDeviceToken().then((token) => {
-                   should.exist(token);
-                   expect(token).to.match(/[a-f0-9]{96}/);
-                   return done();
-                });
-            });
-            it("Get market details for an AEON/BTC on Bittrex", function (done) {
-                Blockfolio.getMarketDetails("AEON/BTC", {
-                    exchange: "bittrex"
-                }, (err, details) => {
-                    if (err) { return done(err); }
+            describe("Misc", function () {
 
-                    should.exist(details.ask);
-                    expect(details.ask).to.be.a("string");
-                    return done();
+                it("Get the portfolio summary", function (done) {
+                    Blockfolio.getPortfolioSummary().then((summary) => {
+                        should.exist(summary);
+                        expect(summary.btcValue).to.be.a("number");
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
                 });
-            });
-            it("Get market details for an LTC/BTC on the top exchange", function (done) {
-                Blockfolio.getMarketDetails("LTC/BTC").then((details) => {
-                    should.exist(details.ask);
-                    expect(details.ask).to.be.a("string");
-                    return done();
-                }).catch((err) => { return done(err); });
-            });
-            it("Get available exchanges for this token", function (done) {
-                Blockfolio.getExchanges("AEON/BTC", (err, exchanges) => {
-                    if (err) { return done(err); }
 
-                    expect(exchanges).to.be.an("array");
-                    return done();
+                it("Get the currencies list", function (done) {
+                    Blockfolio.getCurrencies((err, currencies) => {
+                        if (err) {
+                            return done(err);
+                        }
+                        should.exist(currencies);
+                        expect(currencies).to.be.an("array");
+                        return done();
+                    });
                 });
-            });
-            it("Get available exchanges for an incorrect token", function (done) {
-                Blockfolio.getExchanges("ZSKJD/BTC").then((exchanges) => {
-                    should.not.exist(exchanges);
-                }).catch((err) => {
-                    should.exist(err.message);
-                    expect(err.message).to.equal("ZSKJD is not an available token on Blockfolio!");
-                    return done();
-                });
-            });
-            it("Add a token pair to watch from Bittrex", function (done) {
-                Blockfolio.watchCoin("AEON/BTC", "bittrex", (err) => {
-                    if (err) return done(err);
-                    return done();
-                });
-            });
-            it("Watch LTC/BTC from the top exchange", function (done) {
-                Blockfolio.watchCoin("LTC/BTC").then(() => {
-                    return done();
-                }).catch((err) => { return done(err); });
-            });
-            it("Add an alert when LTC/EUR crosses 200", function (done) {
-                Blockfolio.addAlert("LTC/EUR", {
-                    above: 200
-                }).then(() => {
-                    return done();
-                }).catch((err) => { return done(err); });
-            });
-            let alertToDelete = 1;
-            it("Get the alerts for LTC/EUR", function (done) {
-                Blockfolio.getAlerts("LTC/EUR").then((alerts) => {
-                    expect(alerts).to.be.an("array");
-                    alertToDelete = alerts[0].alertId;
-                    return done();
-                }).catch((err) => { return done(err); });
-            });
-            it("Remove the just added alert", function (done) {
-                Blockfolio.removeAlert(alertToDelete).then(() => {
-                    return done();
-                }).catch((err) => { return done(err); });
-            });
-            it("... should works with a promise too", function (done) {
-                Blockfolio.watchCoin("AEON/BTC", {
-                    exchange: "bittrex"
-                }).then(() => {
-                    return done();
-                }).catch((err) => {
-                    return done(err);
-                });
-            });
-            it("Get the last price of an incorrect token on this exchange", function (done) {
-                Blockfolio.getPrice("EAZRREZREZ/BTC", {
-                    exchange: "bittrex"
-                }, (err, rPrice) => {
-                    should.exist(err.message);
-                    expect(err.message).to.equal("EAZRREZREZ is not an available token on Blockfolio!");
-                    should.not.exist(rPrice);
-                    return done();
-                });
-            });
-            it("... and with a valid token, but an incorrect base", function (done) {
-                Blockfolio.getPrice("BTC/DSQFSDFDSF", {
-                    exchange: "bittrex"
-                }, (err, nPrice) => {
-                    should.exist(err.message);
-                    expect(err.message).to.equal("BTC is not an available in DSQFSDFDSF on Blockfolio!");
-                    return done();
-                });
-            });
-            it("Get the last price of AEON on this exchange", function (done) {
-                Blockfolio.getPrice("AEON/BTC", {
-                    exchange: "bittrex"
-                }, (err, cPrice) => {
-                    if (err) { return done(err); }
 
-                    expect(cPrice).to.be.a("number");
-                    return done();
+                it("Get the coins list", function (done) {
+                    Blockfolio.getCoinsList((err, coins) => {
+                        if (err) {
+                            return done(err);
+                        }
+                        should.exist(coins);
+                        expect(coins).to.be.an("array");
+                        return done();
+                    });
+                });
+
+                it("Get a Disposable Device Token", function (done) {
+                    Blockfolio.getDisposableDeviceToken().then((token) => {
+                        should.exist(token);
+                        expect(token).to.match(/[a-f0-9]{96}/);
+                        return done();
+                    });
                 });
             });
-            it("Add a BTC position on this pair", function (done) {
-                Blockfolio.addPosition("AEON/BTC", {
-                    exchange: "bittrex",
-                    price: 0.00018,
-                    amount: 200,
-                    note: "AEON FTW"
-                }, (err) => {
-                    if (err) { return done(err); }
+            describe("Markets & Exchanges", function () {
 
-                    return done();
+                it("Get market details for an AEON/BTC on Bittrex", function (done) {
+                    Blockfolio.getMarketDetails("AEON/BTC", {
+                        exchange: "bittrex"
+                    }, (err, details) => {
+                        if (err) {
+                            return done(err);
+                        }
+
+                        should.exist(details.ask);
+                        expect(details.ask).to.be.a("string");
+                        return done();
+                    });
+                });
+
+                it("Get market details for an LTC/BTC on the top exchange", function (done) {
+                    Blockfolio.getMarketDetails("LTC/BTC").then((details) => {
+                        should.exist(details.ask);
+                        expect(details.ask).to.be.a("string");
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
+
+                it("Get available exchanges for this token", function (done) {
+                    Blockfolio.getExchanges("AEON/BTC", (err, exchanges) => {
+                        if (err) {
+                            return done(err);
+                        }
+
+                        expect(exchanges).to.be.an("array");
+                        return done();
+                    });
+                });
+
+                it("Get available exchanges for an incorrect token", function (done) {
+                    Blockfolio.getExchanges("ZSKJD/BTC").then((exchanges) => {
+                        should.not.exist(exchanges);
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("ZSKJD is not an available token on Blockfolio!");
+                        return done();
+                    });
+                });
+
+                it("Get the last price of an incorrect token on this exchange", function (done) {
+                    Blockfolio.getPrice("EAZRREZREZ/BTC", {
+                        exchange: "bittrex"
+                    }, (err, rPrice) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("EAZRREZREZ is not an available token on Blockfolio!");
+                        should.not.exist(rPrice);
+                        return done();
+                    });
+                });
+
+                it("... and with a valid token, but an incorrect base", function (done) {
+                    Blockfolio.getPrice("BTC/DSQFSDFDSF", {
+                        exchange: "bittrex"
+                    }, (err, nPrice) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("BTC is not an available in DSQFSDFDSF on Blockfolio!");
+                        return done();
+                    });
+                });
+
+                it("Get the last price of AEON on this exchange", function (done) {
+                    Blockfolio.getPrice("AEON/BTC", {
+                        exchange: "bittrex"
+                    }, (err, cPrice) => {
+                        if (err) { return done(err); }
+
+                        expect(cPrice).to.be.a("number");
+                        return done();
+                    });
                 });
             });
-            it("Get the summary for current position", function (done) {
-                Blockfolio.getHoldings("AEON/BTC").then((summary) => {
-                    should.exist(summary.holdingValueString);
-                    expect(summary.holdingValueString).to.be.a("string");
-                    return done();
-                }).catch((err) => { return done(err); });
-            });
+            describe("Positions", function () {
 
-            var posId = 0;
-            it("Get orders details for this position", function (done) {
-                Blockfolio.getPositions({ pair: "AEON/BTC" }).then((positions) => {
-                    should.exist(positions);
-                    expect(positions).to.be.an("array");
-                    posId = positions[0].positionId;
-                    return done();
-                }).catch((err) => { return done(err); });
-            });
-            it("Remove the just added position", function (done) {
-                Blockfolio.removePosition(posId).then(() => {
-                    return done();
-                }).catch((err) => { return done(err); });
-            });
-            it("And then remove completely the coin from portfolio", function (done) {
-                Blockfolio.removeCoin("AEON/BTC", (err, res) => {
-                    if (err) { return done(err); }
+                it("Add a BTC position on this pair", function (done) {
+                    Blockfolio.addPosition("AEON/BTC", {
+                        exchange: "bittrex",
+                        price: 0.00018,
+                        amount: 200,
+                        note: "AEON FTW"
+                    }, (err) => {
+                        if (err) { return done(err); }
 
-                    expect(res).to.equal("success");
-                    return done();
+                        return done();
+                    });
                 });
+
+                it("Get the summary for current position", function (done) {
+                    Blockfolio.getHoldings("AEON/BTC").then((summary) => {
+                        should.exist(summary.holdingValueString);
+                        expect(summary.holdingValueString).to.be.a("string");
+                        return done();
+                    }).catch((err) => { return done(err); });
+                });
+
+                var posId = 0;
+                it("Get orders details for this position", function (done) {
+                    Blockfolio.getPositions({ pair: "AEON/BTC" }).then((positions) => {
+                        should.exist(positions);
+                        expect(positions).to.be.an("array");
+                        posId = positions[0].positionId;
+                        return done();
+                    }).catch((err) => { return done(err); });
+                });
+
+                it("Remove the just added position", function (done) {
+                    Blockfolio.removePosition(posId).then(() => {
+                        return done();
+                    }).catch((err) => { return done(err); });
+                });
+
+                it("And then remove completely the coin from portfolio", function (done) {
+                    Blockfolio.removeCoin("AEON/BTC", (err, res) => {
+                        if (err) { return done(err); }
+
+                        expect(res).to.equal("success");
+                        return done();
+                    });
+                });
+
+                it("Get actual positions left", function (done) {
+                    Blockfolio.getPositions((err, positions) => {
+                        if (err) { return done(err); }
+
+                        should.exist(positions);
+                        expect(positions).to.be.an("array");
+                        return done();
+                    });
+                });
+
+                it("Add a token pair to watch from Bittrex", function (done) {
+                    Blockfolio.watchCoin("AEON/BTC", "bittrex", (err) => {
+                        if (err) return done(err);
+                        return done();
+                    });
+                });
+
+                it("Watch LTC/BTC from the top exchange", function (done) {
+                    Blockfolio.watchCoin("LTC/BTC").then(() => {
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
+
+                it("... should works with a promise too", function (done) {
+                    Blockfolio.watchCoin("AEON/BTC", {
+                        exchange: "bittrex"
+                    }).then(() => {
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
+
             });
+            describe("Alerts", function () {
 
-            it("Get actual positions left", function (done) {
-                Blockfolio.getPositions((err, positions) => {
-                    if (err) { return done(err); }
+                it("Add an alert when LTC/EUR crosses 200", function (done) {
+                    Blockfolio.addAlert("LTC/EUR", {
+                        above: 200
+                    }).then(() => {
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
 
-                    should.exist(positions);
-                    expect(positions).to.be.an("array");
-                    return done();
+                let alertToDelete = 1;
+                it("Get the alerts for LTC/EUR", function (done) {
+                    Blockfolio.getAlerts("LTC/EUR").then((alerts) => {
+                        expect(alerts).to.be.an("array");
+                        alertToDelete = alerts[0].alertId;
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
+
+                it("Pause all alerts on LTC/EUR", function (done) {
+                    Blockfolio.pauseAllAlerts("LTC/EUR").then(() => {
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
+
+                it("... And restart them", function (done) {
+                    Blockfolio.startAllAlerts("LTC/EUR").then(() => {
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
+
+                it("Pause just the last added alert", function (done) {
+                    Blockfolio.pauseAlert(alertToDelete).then(() => {
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
+
+                it("... Restart it", function (done) {
+                    Blockfolio.startAlert(alertToDelete).then(() => {
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
+
+                it("... And then remove it!", function (done) {
+                    Blockfolio.removeAlert(alertToDelete).then(() => {
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
                 });
             });
         });
