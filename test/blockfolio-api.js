@@ -197,7 +197,7 @@
                 });
             });
             it("Add a BTC position on this pair", function (done) {
-                Blockfolio.addPosition(true, "AEON/BTC", "bittrex", 0.00018, 200, "AEON FTW", (err, res) => {
+                Blockfolio.addPosition(true, "AEON/BTC", "bittrex", 0.00018, 200, null, "AEON FTW", (err, res) => {
                     if (err) { return done(err); }
 
                     expect(res).to.equal("success");
