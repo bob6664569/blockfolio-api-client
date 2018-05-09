@@ -3,15 +3,15 @@
 
     'use strict';
 
-    const   chai            = require("chai"),
-            should          = chai.should(),
-            expect          = chai.expect;
+    const chai = require("chai"),
+        should = chai.should(),
+        expect = chai.expect;
 
-    const   Blockfolio      = require("../index");
+    const Blockfolio = require("../index");
 
-    const   FAKE_TOKEN      = "1915f3d2ef313e86";
+    const FAKE_TOKEN = "1915f3d2ef313e86";
 
-    describe("Blockfolio API", function() {
+    describe("Blockfolio API", function () {
         describe("General", function () {
             it("Get the API version", function (done) {
                 Blockfolio.getVersion((err, version) => {
@@ -82,32 +82,32 @@
             });
             it("should convert properly XRP/BTC to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("XRP/BTC");
-                expect(pair).to.be.deep.equal({base: "BTC", token: "XRP"});
+                expect(pair).to.be.deep.equal({ base: "BTC", token: "XRP" });
                 return done();
             });
             it("should convert properly BTC/USD to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC/USD");
-                expect(pair).to.be.deep.equal({base: "USD", token: "BTC"});
+                expect(pair).to.be.deep.equal({ base: "USD", token: "BTC" });
                 return done();
             });
             it("should convert properly AEON to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("AEON");
-                expect(pair).to.be.deep.equal({base: "BTC", token: "AEON"});
+                expect(pair).to.be.deep.equal({ base: "BTC", token: "AEON" });
                 return done();
             });
             it("should convert properly BTC-LTC to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC-LTC");
-                expect(pair).to.be.deep.equal({base: "BTC", token: "LTC"});
+                expect(pair).to.be.deep.equal({ base: "BTC", token: "LTC" });
                 return done();
             });
             it("should convert properly BTC-DASH to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC-DASH");
-                expect(pair).to.be.deep.equal({base: "BTC", token: "DASH"});
+                expect(pair).to.be.deep.equal({ base: "BTC", token: "DASH" });
                 return done();
             });
             it("should convert properly BTC-BCH to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC-BCH");
-                expect(pair).to.be.deep.equal({base: "BTC", token: "BCH"});
+                expect(pair).to.be.deep.equal({ base: "BTC", token: "BCH" });
                 return done();
             });
         });
@@ -132,8 +132,8 @@
             });
             it("Get a Disposable Device Token", function (done) {
                 Blockfolio.getDisposableDeviceToken(token => {
-                   should.exist(token);
-                   return done();
+                    should.exist(token);
+                    return done();
                 });
             });
             it("Get market details for an AEON/BTC", function (done) {
@@ -197,7 +197,23 @@
                 });
             });
             it("Add a BTC position on this pair", function (done) {
-                Blockfolio.addPosition(true, "AEON/BTC", "bittrex", 0.00018, 200, "AEON FTW", (err, res) => {
+                Blockfolio.addPosition(true, "AEON/BTC", "bittrex", 0.00018, 200, null, "AEON FTW", (err, res) => {
+                    if (err) { return done(err); }
+
+                    expect(res).to.equal("success");
+                    return done();
+                });
+            });
+            it("Add a position honor the buy parameter", function (done) {
+                Blockfolio.addPosition(true, "BTC-SC", "bittrex", 0.000003, -10500, null, null, (err, res) => {
+                    if (err) { return done(err); }
+
+                    expect(res).to.equal("success");
+                    return done();
+                });
+            });
+            it("Add a position can add a sell position", function (done) {
+                Blockfolio.addPosition(false, "BTC-SC", "bittrex", 0.0000007, 20000, new Date(2017, 10, 18), "Buying the dip", (err, res) => {
                     if (err) { return done(err); }
 
                     expect(res).to.equal("success");
