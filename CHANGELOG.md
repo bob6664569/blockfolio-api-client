@@ -2,9 +2,10 @@
 
 ## [Unreleased]
 
-## [1.0.0-beta4] - 2018-05-09
+## [1.0.0-beta4] - 2018-05-10
 ### Added
 - pauseAlert, startAlert, pauseAllAlerts, startAllAlerts
+- How to downgrade Blockfolio to get your DEVICE_TOKEN
 ### Changed
 - reordering tests
 

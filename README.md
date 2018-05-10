@@ -29,6 +29,47 @@ Installation
 npm install blockfolio-api-client@beta --save
 ```
 
+Finding your `DEVICE_TOKEN`
+---------------------------
+
+The `DEVICE_TOKEN` used to be found under the `Settings` menu until
+version `1.1.14` of Blockfolio, since `1.1.15`, only a *disposable* one
+is displayed on the app.
+
+If you want to find out what is your real `DEVICE_TOKEN`, you have
+several ways to do it, but we will only document here the easiest one :
+
+### Downgrading Blockfolio
+
+**Once you get your `DEVICE_TOKEN` using this method, you may then go
+back to the latest version without any issue, enjoy!**
+
+#### For Android
+
+You need to allow 3rd parties packages / Installation outside the Play
+Store, then install an old version directly from the APK.
+
+Then you can easily find sources for the old official APK on the Internet (ie.
+[APK4FUN](https://www.apk4fun.com/link/263867/a/),
+[APK.Plus](https://apk.plus/download/com.blockfolio.blockfolio/33d0332717386308ed86e4dbff7e7b41/),
+and many others...)
+
+Just remove your current version, download the `1.1.14` and install it
+on your device. You should now see your real `DEVICE_TOKEN` and start to
+play with the API!
+
+#### For iPhones
+
+If you installed Blockfolio before the 1.1.5 update, you can find the
+previous version using iTunes.
+
+Go to the `Music` > `iTunes` > `iTunes Media` > `Mobile Applications`
+folder on your drive, then you should find a folder called
+`Previous Mobile Applications`. Find the `1.1.14` version of
+Blockfolio, and drag and drop it onto iTunes. Delete the app from your
+phone, and resync with iTunes. You should be back to 1.1.14 version,
+congratulations !
+
 Usage
 -----
  1. Require the module
@@ -99,20 +140,30 @@ Blockfolio
 Methods
 -------
 
-- [getPositions](#getpositionspair_or_callback-callback)
-- [addPosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback)
-- [removePosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback)
-- [watchCoin](#watchcoinpair-exchange-callback)
-- [removeCoin](#removecoinpair-callback)
-- [getPrice](#getpricepair-exchange-callback)
-- [getExchanges](#getexchangespair-callback)
-- [addAlert](#addalertspair-options_or_callback-callback)
-- [removeAlert](#removealertalertid)
-- [getAlerts](#getalertspair-callback)
-- [getHoldings](#getholdingspair-callback)
-- [getMarketDetails](#getmarketdetailspair-exchange-callback)
-- [getCoinsList](#getcoinslistcallback)
-- [getCurrencies](#getcurrenciescallback)
+- **Miscellaneous**
+  - [getCoinsList](#getcoinslistcallback) : Get the list of all coins available on Blockfolio
+  - [getCurrencies](#getcurrenciescallback) : Get the list of available currencies
+  - [getAnnouncements](#getannouncements) : Get announcements from the Signal API
+  - [getStatus](#getstatus) : Get the system status of the API
+- **Positions**
+  - [getPositions](#getpositionspair_or_callback-callback) : Get a summary of all your positions
+  - [addPosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback) : Add a position (many possibilities)
+  - [removePosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback) : Remove a specific position
+  - [watchCoin](#watchcoinpair-exchange-callback) : Just add a pair to watch on your portfolio
+  - [removeCoin](#removecoinpair-callback) : Remove completely a pair from your list
+  - [getHoldings](#getholdingspair-callback) : Get holdings info for a specific coin
+- **Exchanges & Markets**
+  - [getPrice](#getpricepair-exchange-callback) : Get the price of a coin (you can specify an exchange)
+  - [getExchanges](#getexchangespair-callback) : Get the list of exchanges for a specific coin
+  - [getMarketDetails](#getmarketdetailspair-exchange-callback) : Get informations about the current market of a coin
+- **Alerts**
+  - [addAlert](#addalertspair-options_or_callback-callback) : Add an price alert for a coin
+  - [removeAlert](#removealertalertid) : Remove a specific alert
+  - [getAlerts](#getalertspair-callback) : Get the list of set up alerts for a coin
+  - [pauseAlert](#getalertspair-callback) : Pause a specific alert
+  - [startAlert](#getalertspair-callback) : Restart a specific alert
+  - [pauseAllAlerts](#getalertspair-callback) : Pause all alerts on a coin
+  - [startAllAlerts](#getalertspair-callback) : Restart all alerts on a coin
 
 
 ### addPosition(pair\[, options, callback\])
@@ -142,22 +193,21 @@ Blockfolio.addPosition("XMR/BTC", {
 });
 ```
 
-### watchCoin(pair, exchange, callback)
+### watchCoin(pair[, options, callback])
 
 **Add a coin to your portfolio without adding any position**
 
-**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
-
-**exchange** (String) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
-
-**callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body)
+- **pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+- **options** : if no option is provided, then the coin is just added to the watchlist on the top exchange
+  - **exchange** (String - default to the top exchange) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
+- **callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body)
 
 #### Example
 ```javascript
-Blockfolio.watchCoin("XMR/BTC", "bittrex", (err, res) => {
-    if (err) throw(err);
-
+Blockfolio.watchCoin("XMR/BTC", { exchange: "bittrex" }).then(() => {
     // XMR from Bittrex added to your portfolio !
+}).catch((err) => { 
+  console.error(err);
 });
 ```
 
