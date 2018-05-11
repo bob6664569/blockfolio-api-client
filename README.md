@@ -16,8 +16,8 @@
 Disclaimer
 ----------
 
-**Use with caution: Your `DEVICE_TOKEN` is used to access all your
-Blockfolio datas, keep it safe and DON'T make it public.**
+**Use with caution: Your `DEVICE_TOKEN` is used to access all your**
+**Blockfolio datas, keep it safe and DON'T make it public.**
 
 **This module is NOT provided by Blockfolio.**
 
@@ -41,8 +41,8 @@ several ways to do it, but we will only document here the easiest one :
 
 ### Downgrading Blockfolio
 
-**Once you get your `DEVICE_TOKEN` using this method, you may then go
-back to the latest version without any issue, enjoy!**
+**Once you get your `DEVICE_TOKEN` using this method, you may then go**
+**back to the latest version without any issue, enjoy!**
 
 #### For Android
 
@@ -80,7 +80,7 @@ Usage
 Examples
 --------
 
-##### Add a position, fetch it then remove it (Promises-style)
+#### Add a position, fetch it then remove it (Promises-style)
 
 ```javascript
 const Blockfolio = require("blockfolio-api-client");
@@ -116,6 +116,9 @@ Blockfolio
 ```
 
 #### Get the list of your global holdings (old callback-style)
+
+Every client's methods could be called with an ending *error-first callback*. In that case, the first parameter of the callback must be `null` if everything was fine, and returns the result in second parameter. If the method doesn't succeed, than the first parameter will contain the returned error, and the second will be populated with the raw body of the API's reponse.
+
 ```javascript
 const Blockfolio = require("blockfolio-api-client");
 
@@ -137,8 +140,8 @@ Blockfolio
     });
 ```
 
-Methods
--------
+Documentation
+-------------
 
 - **Miscellaneous**
   - [getCoinsList](#getcoinslistcallback) : Get the list of all coins available on Blockfolio
@@ -165,202 +168,370 @@ Methods
   - [pauseAllAlerts](#getalertspair-callback) : Pause all alerts on a coin
   - [startAllAlerts](#getalertspair-callback) : Restart all alerts on a coin
 
+### Miscellaneous
 
-### addPosition(pair\[, options, callback\])
+#### getCoinsList(\[callback\])
 
-**Add a new position to your portfolio.**
+##### Synopsis
 
-- **pair** (String or Pair Object) : Token pair of the position (ie. `"XMR/BTC"`)
-- **options** : if no option is provided, then the coin is just added to the watchlist
-  - **mode** (String - default: "sell") : `buy` or `sell`
-  - **exchange** (String - default to the top exchange) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
-  - **initPrice** (Number - default to last price) : Price of token pair when the order is executed (see `getPrice` to get the latest price for a specific token pair on a specific exchange)
-  - **amount** (Number - default 0) : Quantity of tokens in the position
-  - **note** (String - default empty) : Note to add to the position in Blockfolio
-- **callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body) - you can also use directly the result as a Promise
+Get the whole list of coins supported by Blockfolio
 
-#### Example
+##### Returns
+
+
+
+##### Example
+
 ```javascript
-Blockfolio.addPosition("XMR/BTC", {
-    mode: "buy",
-    exchange: "bittrex",
-    amount: 42,
-    note: "I really like Monero !"
-}).then(() => {
-    console.log("42 XMR successfully added to your Blockfolio at the current price from Bittrex!"
-}).catch((err) => { 
-    console.error(err);
-});
+Blockfolio.getCoinsList().then((coins) => {
+    console.log(coins);
+}).catch((err) => { console.error(err); });
 ```
 
-### watchCoin(pair[, options, callback])
+#### getCurrencies(\[callback\])
 
-**Add a coin to your portfolio without adding any position**
+##### Synopsis
 
-- **pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
-- **options** : if no option is provided, then the coin is just added to the watchlist on the top exchange
-  - **exchange** (String - default to the top exchange) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
-- **callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body)
+Get the whole list of supported currencies.
 
-#### Example
+##### Example
 ```javascript
-Blockfolio.watchCoin("XMR/BTC", { exchange: "bittrex" }).then(() => {
-    // XMR from Bittrex added to your portfolio !
-}).catch((err) => { 
-  console.error(err);
-});
+Blockfolio.getCurrencies().then((currencies) => {
+    currencies.forEach(currency => {
+        console.log(`${currency.fullName} (${currency.symbol}) is abbreviated ${currency.currency}.`);
+    });
+}).catch((err) => { console.error(err); });
 ```
 
-### getPrice(pair, exchange, callback)
+#### getAnnouncements(\[callback\])
 
-**Retrieve the last ticker price for specific token pair on specific exchange**
+##### Synopsis
 
-**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+Get the last announcements from the new Signal API. Announcements that you receive depends on the coins you own on your portfolio.
 
-**exchange** (String) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
+##### Example
 
-**callback(err, price)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `price` should return the last price (otherwise, it will be the response body)
-
-#### Example
 ```javascript
-Blockfolio.getPrice("XMR/BTC", "bittrex", (err, price) => {
-    if (err) throw(err);
-
-    console.log("Current price for XMR on Bittrex : " + price + "btc");
-});
+Blockfolio.getAnnouncements().then((announcements) => {
+    console.log(announcements);
+}).catch((err) => { console.error(err); });
 ```
 
-### getExchanges(pair, callback)
+#### getStatus(\[callback\])
 
-**Returns a list of exchanges where the specified token pair is available**
+##### Synopsis
 
-**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+Get an status message from Blockfolio. Without any issues, this message is empty.
 
-**callback(err, exchanges)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `exchanges` should contain an array with the list of exchanges (otherwise, it will be the response body)
+##### Example
 
-#### Example
 ```javascript
-Blockfolio.getExchanges("XMR/BTC", (err, exchanges) => {
-    if (err) throw(err);
-
-    console.log("Top exchange for XMR/BTC is : " + exchanges[0]);
-});
+Blockfolio.getStatus().then((status) => {
+    console.log(status);
+}).catch((err) => { console.error(err); });
 ```
 
-### getPositions(pair_or_callback[, callback])
+### Positions
 
-**Return a summary of all the positions in Blockfolio**
+#### getPositions(\[pair, callback\])
 
-First param could be directly the callback, in this case, all position summaries are returned. If the first parameter is a token pair, then the detailed positions regarding this specific pair are returned.
+##### Synopsis
 
-**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+Return a summary of all the positions in Blockfolio
 
-**callback(err, positions)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `positions` should contain an array with all the position summaries, or detailed for specific token (otherwise, it will be the response body)
+If no pair is provided, then all position summaries are returned. If a token pair is passed, then the detailed positions regarding this specific pair are returned.
 
-#### Examples
+##### Arguments
+
+- **pair** (String) : Token pair of the positions (ie. `"XMR/BTC"`)
+
+##### Examples
+
 ```javascript
-Blockfolio.getPositions((err, positions) => {
-    if (err) throw(err);
-
+Blockfolio.getPositions().then((positions) => {
     positions.forEach((pos) => {
         console.log(`I HODL ${pos.quantity} ${pos.coin}/${pos.base} for a value of ${pos.holdingValueFiat} ${pos.fiatSymbol}`);
     });
-});
+}).catch((err) => { console.error(err); });
+```
 
-Blockfolio.getPositions("BTC/USD", (err, positions) => {
-    if (err) throw(err);
+OR
 
+```javascript
+Blockfolio.getPositions("BTC/USD").then((positions) => {
     // positions contains all the orders saved on Blockfolio in "BTC/USD"
     positions.forEach((pos) => {
         // Do something with each position taken
     });
-});
+}).catch((err) => { console.error(err); });
 ```
 
-### getHoldings(pair, callback)
+#### removePosition(positionId[, callback\])
 
-**Get the summary of all opened positions on specified token pair**
+##### Synopsis
 
-**pair** (String) : Token pair of the position (ie. `"XMR/BTC"`)
+Add a new position to your portfolio.
 
-**callback(err, summary)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `holdings` should contain an object with the summarized informations on current positions on specified token pair (otherwise, it will be the response body)
+##### Arguments
 
+- **positionId** (String or Number) : ID of the position to remove
+
+##### Example
 ```javascript
-Blockfolio.getHoldings("XMR/BTC", (err, holdings) => {
-    if (err) throw(err);
-
-    console.log(holdings);
-});
+Blockfolio.removePosition(42).then((() => {
+    console.log("Your position #42 has been successfuly removed!"
+}).catch((err) => { console.error(err); });
 ```
 
-### removeCoin(pair, callback)
+#### watchCoin(pair\[, options, callback\])
 
-**Completely remove a coin from your portfolio**
+##### Synopsis
 
-**pair** (String) : Token pair to remove from the portfolio (ie. `"XMR/BTC"`)
+Add a coin to your portfolio without adding any position
 
-**callback(err, response)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `response` should contain `success` (otherwise, it will be the response body)
+##### Arguments
 
-#### Example
+- **pair** (String) : Token pair of the coin to watch (ie. `"XMR/BTC"`)
+- **options** : if no option is provided, then the coin is just added to the watchlist on the top exchange
+  - **exchange** (String - default to the top exchange) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
+
+##### Example
 ```javascript
-Blockfolio.removeCoin("XMR/BTC", (err, res) => {
-    if (err) throw(err);
+Blockfolio.watchCoin("XMR/BTC", { exchange: "bittrex" }).then(() => {
+    // XMR from Bittrex added to your portfolio !
+}).catch((err) => { console.error(err); });
+```
 
+#### removeCoin(pair\[, callback\])
+
+##### Synopsis
+
+Completely remove a coin from your portfolio
+
+##### Arguments
+
+- **pair** (String) : Token pair to remove from the portfolio (ie. `"XMR/BTC"`)
+
+##### Example
+```javascript
+Blockfolio.removeCoin("XMR/BTC").then(() => {
     // XMR/BTC is now removed from your portfolio !
+}).catch((err) => { 
+    // XMR/BTC could not be removed from your portfolio
 });
 ```
 
+#### getHoldings(pair\[, callback\])
 
-### getMarketDetails(pair, exchange, callback)
+##### Synopsis
 
-#### Get informations on the current market for specified token pair on specified exchange
+Get the summary of all opened positions on specified token pair
 
-**pair** (String) : Token pair to remove from the portfolio (ie. `"XMR/BTC"`)
+##### Arguments
 
-**exchange** (String) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
+- **pair** (String) : Token pair (ie. `"XMR/BTC"`)
 
-**callback(err, response)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `response` should contain the details (otherwise, it will be the response body)
+##### Example
 
-#### Example
 ```javascript
-Blockfolio.getMarketDetails("XMR/BTC", "bittrex", (err, details) => {
-    if (err) throw(err);
+Blockfolio.getHoldings("XMR/BTC").then((holdings) => {
+    console.log(holdings);
+}).catch((err) => { console.error(err); });
+```
 
+### Markets & Exchanges
+
+#### getPrice(pair\[, options, callback\])
+
+##### Synopsis
+
+Retrieve the last ticker price for specific token pair on specific exchange
+
+##### Arguments
+
+- **pair** (String) : Token pair (ie. `"XMR/BTC"`)
+- **options** : if no option is provided, then the price is returned from the top exchange
+  - **exchange** (String - default to the top exchange) : Name of the exchange where the price should be retrieved (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
+
+##### Example
+
+```javascript
+Blockfolio.getPrice("XMR/BTC", { exchange: "bittrex" }).then((price) => {
+    console.log("Current price for XMR on Bittrex : " + price + "btc");
+}).catch((err) => { console.error(err); });
+```
+
+#### getExchanges(pair\[, callback\])
+
+##### Synopsis
+
+Returns a list of exchanges where the specified token pair is available
+
+##### Arguments
+
+- **pair** (String) : Token pair (ie. `"XMR/BTC"`)
+
+##### Returns
+
+List of available exchanges for this coin.
+
+##### Example
+
+```javascript
+Blockfolio.getExchanges("XMR/BTC").then((exchanges) => {
+    console.log("Top exchange for XMR/BTC is : " + exchanges[0]);
+}).catch((err) => { console.error(err); });
+```
+
+#### getMarketDetails(pair[, options, callback])
+
+##### Synopsis
+
+Get informations on the current market for specified token pair on specified exchange
+
+##### Arguments
+
+- **pair** (String) : Token pair to get market details from (ie. `"XMR/BTC"`)
+- **options** : if no option is provided, then the market on the top exchange is returned
+  - **exchange** (String - default to the top exchange) : Name of the exchange where from which you want to get market details (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
+
+##### Returns
+
+Details of the selected market
+
+##### Example
+```javascript
+Blockfolio.getMarketDetails("XMR/BTC", { exchange: "bittrex"}).then((details) => {
     console.log(details);
-});
+}).catch((err) => { console.error(err); });
 ```
 
-### getCoinsList(callback)
+### Alerts
 
-**Get the whole list of coins supported by Blockfolio**
+#### addAlert(pair, options[, callback])
 
-**callback(err, coins)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `coins` should contain an array of coins (otherwise, it will be the response body)
+##### Synopsis
 
-#### Example
+Add an price alert for a coin.
+
+##### Arguments
+
+- **pair** (String) : Token pair to get set the alert (ie. `"XMR/BTC"`)
+- **options** : You need to provide at least **under** or **above** option to set an alert
+  - **exchange** (String - default to the top exchange) : Name of the exchange used to trigger the alert (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
+  - **above** (Number) : Top boundary to trigger the alert
+  - **under** (Number) : Bottom boundary to trigger the alert
+  - **persistant** (Boolean) : Set to `true`, the alert will be triggered each time the price crosses a boundary
+
+##### Example
+
 ```javascript
-Blockfolio.getCoinsList((err, coins) => {
-    if (err) throw(err);
-
-    console.log(coins);
-});
+Blockfolio.addAlert("XMR/BTC", { 
+    exchange: "bittrex",
+    above: 0.03
+}).then(() => {
+    // Alert successfuly set !
+}).catch((err) => { console.error(err); });
 ```
 
-### getCurrencies(callback)
+#### removeAlert(alertID[, callback])
 
-**Get the whole list of supported currencies**
+##### Synopsis
 
-**callback(err, currencies)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `currencies` should contain an array of currencies objects (otherwise, it will be the response body)
+Removes an existing alert from your portfolio.
 
-#### Example
+##### Arguments
+
+- **alertId** (Number) : ID of the alert to be removed
+
+##### Examples
+
 ```javascript
-Blockfolio.getCurrencies((err, currencies) => {
-    if (err) throw(err);
-
-    currencies.forEach(currency => {
-        console.log(`${currency.fullName} (${currency.symbol}) is abbreviated ${currency.currency}.`);
-    });
-});
+Blockfolio.removeAlert(42).then(() => {
+    // Alert successfuly removed !
+}).catch((err) => { console.error(err); });
 ```
+
+#### getAlerts(pair[, callback])
+
+##### Synopsis
+
+Retrieve the list of current alerts set for a coin
+
+##### Arguments
+
+- **pair** (String) : Token pair to get set the alert (ie. `"XMR/BTC"`)
+
+##### Example
+
+```javascript
+
+```
+
+#### pauseAlert(alertId[, callback])
+
+##### Synopsis
+
+Pause the specified alert to block it from sending notifications temporarily.
+
+##### Arguments
+
+- **alertID** (Number) : ID of the existing alert to pause
+
+Example
+
+```javascript
+
+```
+
+#### startAlert(alertId[, callback])
+
+##### Synopsis
+
+Restart the specified alert to allow it to send notifications again.
+
+##### Arguments
+
+- **alertID** (Number) : ID of the existing alert to restart
+
+Example
+
+```javascript
+
+```
+
+#### pauseAllAlerts([callback])
+
+##### Synopsis
+
+Pause all alerts and block then from sending notifications temporarily.
+
+##### Example
+
+```javascript
+
+```
+
+#### startAlert([callback])
+
+##### Synopsis
+
+Restart all alerts to allow them to send notifications again.
+
+##### Example
+
+```javascript
+
+```
+
+
+
+Author
+------
+
+**Johan Massin**  - [bob6664569](https://github.com/bob6664569)
+
+See also the list of (contributors)[https://github.com/bob6664569/blockfolio-api-client/graphs/contributors] who participated in this project.
 
 License
 -------
