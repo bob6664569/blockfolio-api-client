@@ -247,7 +247,7 @@
                         should.not.exist(exchanges);
                     }).catch((err) => {
                         should.exist(err.message);
-                        expect(err.message).to.equal("ZSKJD is not an available token on Blockfolio!");
+                        expect(err.message).to.equal("ZSKJD/BTC is not an available token on Blockfolio!");
                         return done();
                     });
                 });
@@ -257,7 +257,7 @@
                         exchange: "bittrex"
                     }, (err, rPrice) => {
                         should.exist(err.message);
-                        expect(err.message).to.equal("EAZRREZREZ is not an available token on Blockfolio!");
+                        expect(err.message).to.equal("EAZRREZREZ/BTC is not an available token on Blockfolio!");
                         should.not.exist(rPrice);
                         return done();
                     });
@@ -266,9 +266,11 @@
                 it("... and with a valid token, but an incorrect base", function (done) {
                     Blockfolio.getPrice("BTC/DSQFSDFDSF", {
                         exchange: "bittrex"
-                    }, (err, nPrice) => {
+                    }).then(() => {
+                        return done(new Error("Should not be here!"));
+                    }).catch((err) => {
                         should.exist(err.message);
-                        expect(err.message).to.equal("BTC is not an available in DSQFSDFDSF on Blockfolio!");
+                        expect(err.message).to.equal("BTC/DSQFSDFDSF is not an available token on Blockfolio!");
                         return done();
                     });
                 });
