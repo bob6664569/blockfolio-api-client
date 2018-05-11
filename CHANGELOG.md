@@ -8,6 +8,7 @@
 - How to downgrade Blockfolio to get your DEVICE_TOKEN
 ### Changed
 - reordering tests
+- documentation for v1.0.0
 
 ## [1.0.0-beta3] - 2018-05-09
 ### Added

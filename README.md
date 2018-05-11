@@ -25,12 +25,20 @@ Get the official Blockfolio app at [blockfolio.com](https://www.blockfolio.com/)
 
 Installation
 ------------
+
 ```sh
 npm install blockfolio-api-client@beta --save
 ```
 
-Finding your `DEVICE_TOKEN`
----------------------------
+Usage
+-----
+
+  1. Require the module
+  2. Call the `init` method with your `DEVICE_TOKEN`
+  3. Once initialized, you can use the following doc and access to all
+    your Blockfolio data !
+
+## Finding your `DEVICE_TOKEN`
 
 The `DEVICE_TOKEN` used to be found under the `Settings` menu until
 version `1.1.14` of Blockfolio, since `1.1.15`, only a *disposable* one
@@ -69,13 +77,6 @@ folder on your drive, then you should find a folder called
 Blockfolio, and drag and drop it onto iTunes. Delete the app from your
 phone, and resync with iTunes. You should be back to 1.1.14 version,
 congratulations !
-
-Usage
------
- 1. Require the module
- 2. Call the `init` method with your `DEVICE_TOKEN`
- 3. Once initialized, you can use the following doc and access to all
- your Blockfolio data !
 
 Examples
 --------
@@ -143,93 +144,31 @@ Blockfolio
 Documentation
 -------------
 
-- **Miscellaneous**
-  - [getCoinsList](#getcoinslistcallback) : Get the list of all coins available on Blockfolio
-  - [getCurrencies](#getcurrenciescallback) : Get the list of available currencies
-  - [getAnnouncements](#getannouncements) : Get announcements from the Signal API
-  - [getStatus](#getstatus) : Get the system status of the API
 - **Positions**
-  - [getPositions](#getpositionspair_or_callback-callback) : Get a summary of all your positions
-  - [addPosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback) : Add a position (many possibilities)
-  - [removePosition](#addpositionbuy-pair-exchange-initprice-amount-note-callback) : Remove a specific position
-  - [watchCoin](#watchcoinpair-exchange-callback) : Just add a pair to watch on your portfolio
-  - [removeCoin](#removecoinpair-callback) : Remove completely a pair from your list
-  - [getHoldings](#getholdingspair-callback) : Get holdings info for a specific coin
+  - [getPositions](#getpositionspair-callback): Get a summary of all your positions
+  - [addPosition](#addpositionpair-options-callback): Add a position (many possibilities)
+  - [removePosition](#removepositionpositionid-callback): Remove a specific position
+  - [watchCoin](#watchcoinpair-options-callback): Just add a pair to watch on your portfolio
+  - [removeCoin](#removecoinpair-callback): Remove completely a pair from your list
+  - [getHoldings](#getholdingspair-callback): Get holdings info for a specific coin
 - **Exchanges & Markets**
-  - [getPrice](#getpricepair-exchange-callback) : Get the price of a coin (you can specify an exchange)
-  - [getExchanges](#getexchangespair-callback) : Get the list of exchanges for a specific coin
-  - [getMarketDetails](#getmarketdetailspair-exchange-callback) : Get informations about the current market of a coin
+  - [getPrice](#getpricepair-options-callback): Get the price of a coin (you can specify an exchange)
+  - [getExchanges](#getexchangespair-callback): Get the list of exchanges for a specific coin
+  - [getMarketDetails](#getmarketdetailspair-options-callback): Get informations about the current market of a coin
 - **Alerts**
-  - [addAlert](#addalertspair-options_or_callback-callback) : Add an price alert for a coin
-  - [removeAlert](#removealertalertid) : Remove a specific alert
-  - [getAlerts](#getalertspair-callback) : Get the list of set up alerts for a coin
-  - [pauseAlert](#getalertspair-callback) : Pause a specific alert
-  - [startAlert](#getalertspair-callback) : Restart a specific alert
-  - [pauseAllAlerts](#getalertspair-callback) : Pause all alerts on a coin
-  - [startAllAlerts](#getalertspair-callback) : Restart all alerts on a coin
-
-### Miscellaneous
-
-#### getCoinsList(\[callback\])
-
-##### Synopsis
-
-Get the whole list of coins supported by Blockfolio
-
-##### Returns
-
-
-
-##### Example
-
-```javascript
-Blockfolio.getCoinsList().then((coins) => {
-    console.log(coins);
-}).catch((err) => { console.error(err); });
-```
-
-#### getCurrencies(\[callback\])
-
-##### Synopsis
-
-Get the whole list of supported currencies.
-
-##### Example
-```javascript
-Blockfolio.getCurrencies().then((currencies) => {
-    currencies.forEach(currency => {
-        console.log(`${currency.fullName} (${currency.symbol}) is abbreviated ${currency.currency}.`);
-    });
-}).catch((err) => { console.error(err); });
-```
-
-#### getAnnouncements(\[callback\])
-
-##### Synopsis
-
-Get the last announcements from the new Signal API. Announcements that you receive depends on the coins you own on your portfolio.
-
-##### Example
-
-```javascript
-Blockfolio.getAnnouncements().then((announcements) => {
-    console.log(announcements);
-}).catch((err) => { console.error(err); });
-```
-
-#### getStatus(\[callback\])
-
-##### Synopsis
-
-Get an status message from Blockfolio. Without any issues, this message is empty.
-
-##### Example
-
-```javascript
-Blockfolio.getStatus().then((status) => {
-    console.log(status);
-}).catch((err) => { console.error(err); });
-```
+  - [addAlert](#addalertpair-options-callback): Add an price alert for a coin
+  - [removeAlert](#removealertalertid-callback): Remove a specific alert
+  - [getAlerts](#getalertspair-callback): Get the list of set up alerts for a coin
+  - [pauseAlert](#pausealertalertid-callback): Pause a specific alert
+  - [startAlert](#startalertalertid-callback): Restart a specific alert
+  - [pauseAllAlerts](#pauseallalertscallback): Pause all alerts on a coin
+  - [startAllAlerts](#startallalertscallback): Restart all alerts on a coin
+- **Miscellaneous**
+  - [getCoinsList](#getcoinslistcallback): Get the list of all coins available on Blockfolio
+  - [getCurrencies](#getcurrenciescallback): Get the list of available currencies
+  - [getAnnouncements](#getannouncementscallback): Get announcements from the Signal API
+  - [getStatus](#getstatuscallback): Get the system status of the API
+  - [getVersion](#getversioncallback): Get the current version number of the API
 
 ### Positions
 
@@ -244,6 +183,10 @@ If no pair is provided, then all position summaries are returned. If a token pai
 ##### Arguments
 
 - **pair** (String) : Token pair of the positions (ie. `"XMR/BTC"`)
+
+##### Returns
+
+An array of position objects.
 
 ##### Examples
 
@@ -264,6 +207,33 @@ Blockfolio.getPositions("BTC/USD").then((positions) => {
         // Do something with each position taken
     });
 }).catch((err) => { console.error(err); });
+```
+
+#### addPosition(pair\[, options, callback\])
+
+**Add a new position to your portfolio.**
+
+- **pair** (String or Pair Object) : Token pair of the position (ie. `"XMR/BTC"`)
+- **options** : if no option is provided, then the coin is just added to the watchlist
+  - **mode** (String - default: "sell") : `buy` or `sell`
+  - **exchange** (String - default to the top exchange) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
+  - **initPrice** (Number - default to last price) : Price of token pair when the order is executed (see `getPrice` to get the latest price for a specific token pair on a specific exchange)
+  - **amount** (Number - default 0) : Quantity of tokens in the position
+  - **note** (String - default empty) : Note to add to the position in Blockfolio
+- **callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body) - you can also use directly the result as a Promise
+
+#### Example
+```javascript
+Blockfolio.addPosition("XMR/BTC", {
+    mode: "buy",
+    exchange: "bittrex",
+    amount: 42,
+    note: "I really like Monero !"
+}).then(() => {
+    console.log("42 XMR successfully added to your Blockfolio at the current price from Bittrex!"
+}).catch((err) => {
+    console.error(err);
+});
 ```
 
 #### removePosition(positionId[, callback\])
@@ -331,6 +301,10 @@ Get the summary of all opened positions on specified token pair
 
 - **pair** (String) : Token pair (ie. `"XMR/BTC"`)
 
+##### Returns
+
+A summary of your holdings of this coin.
+
 ##### Example
 
 ```javascript
@@ -353,6 +327,10 @@ Retrieve the last ticker price for specific token pair on specific exchange
 - **options** : if no option is provided, then the price is returned from the top exchange
   - **exchange** (String - default to the top exchange) : Name of the exchange where the price should be retrieved (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
 
+##### Returns
+
+The price of the token in selected base (or in BTC if no base is provided).
+
 ##### Example
 
 ```javascript
@@ -373,7 +351,7 @@ Returns a list of exchanges where the specified token pair is available
 
 ##### Returns
 
-List of available exchanges for this coin.
+Array of available exchanges for this coin.
 
 ##### Example
 
@@ -397,7 +375,7 @@ Get informations on the current market for specified token pair on specified exc
 
 ##### Returns
 
-Details of the selected market
+Details of the selected market.
 
 ##### Example
 ```javascript
@@ -462,10 +440,18 @@ Retrieve the list of current alerts set for a coin
 
 - **pair** (String) : Token pair to get set the alert (ie. `"XMR/BTC"`)
 
+##### Returns
+
+An array of alert objects.
+
 ##### Example
 
 ```javascript
-
+Blockfolio.getAlerts("XMR/BTC").then((alerts) => {
+    alerts.forEach((alert) => {
+        console.log(`Alert set for ${alert.coin}/${alert.base} is ${alert.alertStatus}!`);
+    });
+}).catch((err) => { console.error(err); });
 ```
 
 #### pauseAlert(alertId[, callback])
@@ -481,7 +467,9 @@ Pause the specified alert to block it from sending notifications temporarily.
 Example
 
 ```javascript
-
+Blockfolio.pauseAlert(42).then(() => {
+	// Alert 42 is now muted
+}).catch((err) => { console.error(err); });
 ```
 
 #### startAlert(alertId[, callback])
@@ -497,7 +485,9 @@ Restart the specified alert to allow it to send notifications again.
 Example
 
 ```javascript
-
+Blockfolio.startAlert(42).then(() => {
+	// Alert 42 is now retarted and will notify you again if triggered!
+}).catch((err) => { console.error(err); });
 ```
 
 #### pauseAllAlerts([callback])
@@ -509,10 +499,12 @@ Pause all alerts and block then from sending notifications temporarily.
 ##### Example
 
 ```javascript
-
+Blockfolio.pauseAllAlerts().then(() => {
+	// ALL Alerts are muted
+}).catch((err) => { console.error(err); });
 ```
 
-#### startAlert([callback])
+#### startAllAlerts([callback])
 
 ##### Synopsis
 
@@ -521,10 +513,104 @@ Restart all alerts to allow them to send notifications again.
 ##### Example
 
 ```javascript
-
+Blockfolio.pauseAllAlerts().then(() => {
+	// ALL Alerts are retarted and will send you some notification if triggered!
+}).catch((err) => { console.error(err); });
 ```
 
+### Miscellaneous
 
+#### getCoinsList(\[callback\])
+
+##### Synopsis
+
+Get the whole list of coins supported by Blockfolio
+
+##### Returns
+
+An array of coin objects.
+
+##### Example
+
+```javascript
+Blockfolio.getCoinsList().then((coins) => {
+    console.log(coins);
+}).catch((err) => { console.error(err); });
+```
+
+#### getCurrencies(\[callback\])
+
+##### Synopsis
+
+Get the whole list of supported currencies.
+
+##### Returns
+
+Array of currency objects.
+
+##### Example
+
+```javascript
+Blockfolio.getCurrencies().then((currencies) => {
+    currencies.forEach(currency => {
+        console.log(`${currency.fullName} (${currency.symbol}) is abbreviated ${currency.currency}.`);
+    });
+}).catch((err) => { console.error(err); });
+```
+
+#### getAnnouncements(\[callback\])
+
+##### Synopsis
+
+Get the last announcements from the new Signal API. Announcements that you receive depends on the coins you own on your portfolio.
+
+##### Returns
+
+Array of announcements.
+
+##### Example
+
+```javascript
+Blockfolio.getAnnouncements().then((announcements) => {
+    console.log(announcements);
+}).catch((err) => { console.error(err); });
+```
+
+#### getStatus(\[callback\])
+
+##### Synopsis
+
+Get an status message from Blockfolio. Without any issues, this message is empty.
+
+##### Returns
+
+Empty string or status message.
+
+##### Example
+
+```javascript
+Blockfolio.getStatus().then((status) => {
+    console.log(status);
+}).catch((err) => { console.error(err); });
+```
+
+#### getVersion(\[callback\])
+
+##### Synopsis
+
+Get the version number of the Blockfolio API.
+
+##### Returns
+
+String containing the version number of the API.
+
+##### Example
+
+```javascript
+Blockfolio.getVersion().then((version) => {
+    console.log(`Blockfolio API ${version}.`);
+}).catch((err) => { console.error(err); });
+```
 
 Author
 ------
@@ -535,4 +621,5 @@ See also the list of (contributors)[https://github.com/bob6664569/blockfolio-api
 
 License
 -------
+
 Distributed under the MIT License.
