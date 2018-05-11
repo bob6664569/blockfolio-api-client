@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.0.0-beta5] - 2018-05-11
+### Fixed
+- _validateTokenPair now valides with the full coins list
+
 ## [1.0.0-beta4] - 2018-05-10
 ### Added
 - pauseAlert, startAlert, pauseAllAlerts, startAllAlerts

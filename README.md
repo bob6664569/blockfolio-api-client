@@ -144,8 +144,9 @@ Blockfolio
 Documentation
 -------------
 
-- **Positions**
-  - [getPositions](#getpositionspair-callback): Get a summary of all your positions
+- **Portfolio & Positions**
+  - [getPortfolioSummary](#getportfoliosummarycallback): Get a summary of your global portfolio
+  - [getPositions](#getpositionspair-callback): Get information about your positions
   - [addPosition](#addpositionpair-options-callback): Add a position (many possibilities)
   - [removePosition](#removepositionpositionid-callback): Remove a specific position
   - [watchCoin](#watchcoinpair-options-callback): Just add a pair to watch on your portfolio
@@ -170,15 +171,34 @@ Documentation
   - [getStatus](#getstatuscallback): Get the system status of the API
   - [getVersion](#getversioncallback): Get the current version number of the API
 
-### Positions
+### Portfolio & Positions
+
+#### getPortfolioSummary(\[callback\])
+
+##### Synopsis
+
+Get the summary of your portfolio
+
+##### Returns
+
+A summary object
+
+##### Example
+
+```javascript
+Blockfolio.getPortfolioSummary().then((summary) => {
+    console.log(`I'm currently owning ${summary.btcValue}btc, for a usd value of ${summary.usdValue}!`);
+}).catch((err) => { console.error(err); });
+```
+
 
 #### getPositions(\[pair, callback\])
 
 ##### Synopsis
 
-Return a summary of all the positions in Blockfolio
+Return a summary of all the positions in Blockfolio if no coin pair is provided.
 
-If no pair is provided, then all position summaries are returned. If a token pair is passed, then the detailed positions regarding this specific pair are returned.
+If  a token pair is passed, then the detailed positions regarding this specific pair are returned.
 
 ##### Arguments
 
@@ -188,7 +208,7 @@ If no pair is provided, then all position summaries are returned. If a token pai
 
 An array of position objects.
 
-##### Examples
+##### Example
 
 ```javascript
 Blockfolio.getPositions().then((positions) => {
@@ -211,7 +231,11 @@ Blockfolio.getPositions("BTC/USD").then((positions) => {
 
 #### addPosition(pair\[, options, callback\])
 
-**Add a new position to your portfolio.**
+##### Synopsis
+
+Add a new position to your portfolio.
+
+##### Arguments
 
 - **pair** (String or Pair Object) : Token pair of the position (ie. `"XMR/BTC"`)
 - **options** : if no option is provided, then the coin is just added to the watchlist
@@ -222,7 +246,7 @@ Blockfolio.getPositions("BTC/USD").then((positions) => {
   - **note** (String - default empty) : Note to add to the position in Blockfolio
 - **callback(err, result)** (Callback) : Function called when the response is received, `err` should be null if everything was fine, and `result` should contain `success` (otherwise, it will be the response body) - you can also use directly the result as a Promise
 
-#### Example
+##### Example
 ```javascript
 Blockfolio.addPosition("XMR/BTC", {
     mode: "buy",
