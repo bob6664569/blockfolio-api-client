@@ -311,7 +311,7 @@
 
                 var posId = 0;
                 it("Get orders details for this position", function (done) {
-                    Blockfolio.getPositions({ pair: "AEON/BTC" }).then((positions) => {
+                    Blockfolio.getPositions("AEON/BTC").then((positions) => {
                         should.exist(positions);
                         expect(positions).to.be.an("array");
                         posId = positions[0].positionId;
