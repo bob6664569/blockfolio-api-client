@@ -118,7 +118,7 @@ Blockfolio
 
 #### Get the list of your global holdings (old callback-style)
 
-Every client's methods could be called with an ending *error-first callback*. In that case, the first parameter of the callback must be `null` if everything was fine, and returns the result in second parameter. If the method doesn't succeed, than the first parameter will contain the returned error, and the second will be populated with the raw body of the API's reponse.
+Every client's methods could be called with an ending *error-first callback*. In that case, the first parameter of the callback must be `null` if everything was fine, and returns the result in second parameter. If the method doesn't succeed, then the first parameter will contain the returned error, and the second will be populated with the raw body of the API's reponse.
 
 ```javascript
 const Blockfolio = require("blockfolio-api-client");

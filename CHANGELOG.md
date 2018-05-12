@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-## [1.0.0-beta5] - 2018-05-11
+## [1.0.0-beta5] - 2018-05-12
 ### Fixed
 - _validateTokenPair now valides with the full coins list
 
