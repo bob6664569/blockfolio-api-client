@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [1.0.0-beta6] - 2018-05-12
+### Added
+- Rate limitation to avoid API issues
+### Fixed
+- getPositions now taking an optional pair in first param like described in README
+
 ## [1.0.0-beta5] - 2018-05-12
 ### Fixed
 - _validateTokenPair now valides with the full coins list

@@ -641,7 +641,7 @@ Author
 
 **Johan Massin**  - [bob6664569](https://github.com/bob6664569)
 
-See also the list of (contributors)[https://github.com/bob6664569/blockfolio-api-client/graphs/contributors] who participated in this project.
+See also the list of [contributors](https://github.com/bob6664569/blockfolio-api-client/graphs/contributors) who participated in this project.
 
 License
 -------
