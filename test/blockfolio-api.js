@@ -104,6 +104,15 @@
                     return done();
                 }).catch((err) => { return done(err); });
             });
+            it("addPosition should fail when disableCoinCheck is enabled", function (done) {
+                Blockfolio.addPosition("BTC/USD").then(() => {
+                    return done(new Error("Should not go here with disableCoinCheck: true!"));
+                }).catch((err) => {
+                    should.exist(err.message);
+                    expect(err.message).to.equal("coinsList uninitialized, could not validate token pairs!");
+                    return done();
+                });
+            });
             it("should fail to register with an existing token", function (done) {
                 Blockfolio._register(FAKE_TOKEN).then(() => {
                     return done(new Error("Should not pass"));
@@ -112,15 +121,9 @@
             // Expand timeout for initialization
             this.timeout(30000);
             it("should be ok with a working token", function (done) {
-                try {
-                    Blockfolio.init(FAKE_TOKEN, (err) => {
-                        if (err) { return done(err); }
-
-                        return done();
-                    });
-                } catch (e) {
-                    return done(e);
-                }
+                Blockfolio.init(FAKE_TOKEN).then(() => {
+                    return done();
+                }).catch((err) => {return done(err); });
             });
         });
         describe("Tools", function () {
@@ -366,6 +369,16 @@
                         return done();
                     }).catch((err) => {
                         return done(err);
+                    });
+                });
+
+                it("addPosition should fail when no parameter is passed", function (done) {
+                    Blockfolio.addPosition().then(() => {
+                        return done(new Error("Should not go here with no pair!"));
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("You must provide a token to add to your position!");
+                        return done();
                     });
                 });
 

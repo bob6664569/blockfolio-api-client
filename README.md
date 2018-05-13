@@ -422,8 +422,8 @@ Add an price alert for a coin.
 - **options** : You need to provide at least **under** or **above** option to set an alert
   - **exchange** (String - default to the top exchange) : Name of the exchange used to trigger the alert (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
   - **above** (Number) : Top boundary to trigger the alert
-  - **under** (Number) : Bottom boundary to trigger the alert
-  - **persistant** (Boolean) : Set to `true`, the alert will be triggered each time the price crosses a boundary
+  - **below** (Number) : Bottom boundary to trigger the alert
+  - **persistent** (Boolean) : Set to `true`, the alert will be triggered each time the price crosses a boundary
 
 ##### Example
 
@@ -586,7 +586,7 @@ Blockfolio.getCurrencies().then((currencies) => {
 
 ##### Synopsis
 
-Get the last announcements from the new Signal API. Announcements that you receive depends on the coins you own on your portfolio.
+Get the last announcements from the new Signal API.
 
 ##### Returns
 
