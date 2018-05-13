@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.0.0-beta7] - 2018-05-13
+### Added
+- Full code coverage
+
 ## [1.0.0-beta6] - 2018-05-12
 ### Added
 - Rate limitation to avoid API issues

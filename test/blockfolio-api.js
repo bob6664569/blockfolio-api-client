@@ -190,14 +190,11 @@
                 });
 
                 it("Get the coins list", function (done) {
-                    Blockfolio.getCoinsList((err, coins) => {
-                        if (err) {
-                            return done(err);
-                        }
+                    Blockfolio.getCoinsList().then((coins) => {
                         should.exist(coins);
                         expect(coins).to.be.an("array");
                         return done();
-                    });
+                    }).catch((err) => { return done(err); });
                 });
 
                 it("Get a Disposable Device Token", function (done) {
@@ -205,7 +202,7 @@
                         should.exist(token);
                         expect(token).to.match(/[a-f0-9]{96}/);
                         return done();
-                    });
+                    }).catch((err) => { return done(err); });
                 });
             });
             describe("Markets & Exchanges", function () {
@@ -291,11 +288,24 @@
             });
             describe("Positions", function () {
 
-                it("Add a BTC position on this pair", function (done) {
+                it("Add a BTC position on this pair (buy)", function (done) {
                     Blockfolio.addPosition("AEON/BTC", {
                         exchange: "bittrex",
                         price: 0.00018,
                         amount: 200,
+                        note: "AEON FTW"
+                    }, (err) => {
+                        if (err) { return done(err); }
+
+                        return done();
+                    });
+                });
+                it("Add another BTC position on this pair (sell)", function (done) {
+                    Blockfolio.addPosition("AEON/BTC", {
+                        type: "sell",
+                        exchange: "bittrex",
+                        price: 0.00018,
+                        amount: 10,
                         note: "AEON FTW"
                     }, (err) => {
                         if (err) { return done(err); }
@@ -371,13 +381,21 @@
                         return done(err);
                     });
                 });
-
                 it("addPosition should fail when no parameter is passed", function (done) {
                     Blockfolio.addPosition().then(() => {
                         return done(new Error("Should not go here with no pair!"));
                     }).catch((err) => {
                         should.exist(err.message);
                         expect(err.message).to.equal("You must provide a token to add to your position!");
+                        return done();
+                    });
+                });
+                it("removePosition should fail when no parameter is passed", function (done) {
+                    Blockfolio.removePosition().then(() => {
+                        return done(new Error("Should not go here with no positionId!"));
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("You must provide a position ID!");
                         return done();
                     });
                 });
@@ -443,6 +461,78 @@
                         return done();
                     }).catch((err) => {
                         return done(err);
+                    });
+                });
+                it("addAlert should fail when no parameter is passed", function (done) {
+                    Blockfolio.addAlert().then(() => {
+                        return done(new Error("Should not go here with no pair!"));
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("You must provide a pair to set alerts!");
+                        return done();
+                    });
+                });
+                it("addAlert should fail when boundaries are missing", function (done) {
+                    Blockfolio.addAlert("XMR/BTC").then(() => {
+                        return done(new Error("Should not go here with no boundaries!"));
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("You must specify at leat a boundary to set up an alert!");
+                        return done();
+                    });
+                });
+                it("getAlerts should fail when no parameter is passed", function (done) {
+                    Blockfolio.getAlerts().then(() => {
+                        return done(new Error("Should not go here with no pair!"));
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("You must provide a pair to get alerts from!");
+                        return done();
+                    });
+                });
+                it("pauseAlert should fail when no parameter is passed", function (done) {
+                    Blockfolio.pauseAlert().then(() => {
+                        return done(new Error("Should not go here with no alertId!"));
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("You must provide an alert ID!");
+                        return done();
+                    });
+                });
+                it("startAlert should fail when no parameter is passed", function (done) {
+                    Blockfolio.startAlert().then(() => {
+                        return done(new Error("Should not go here with no alertId!"));
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("You must provide an alert ID!");
+                        return done();
+                    });
+                });
+                it("pauseAllAlerts should fail when no parameter is passed", function (done) {
+                    Blockfolio.pauseAllAlerts().then(() => {
+                        return done(new Error("Should not go here with no pair!"));
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("You must provide a pair to pause alerts!");
+                        return done();
+                    });
+                });
+                it("startAllAlerts should fail when no parameter is passed", function (done) {
+                    Blockfolio.startAllAlerts().then(() => {
+                        return done(new Error("Should not go here with no pair!"));
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("You must provide a pair to start alerts!");
+                        return done();
+                    });
+                });
+                it("removeAlert should fail when no parameter is passed", function (done) {
+                    Blockfolio.removeAlert().then(() => {
+                        return done(new Error("Should not go here with no alertId!"));
+                    }).catch((err) => {
+                        should.exist(err.message);
+                        expect(err.message).to.equal("You must provide an alert ID!");
+                        return done();
                     });
                 });
             });
