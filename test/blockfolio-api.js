@@ -275,6 +275,13 @@
                     });
                 });
 
+                it("Get the last price of ETH on the top exchange", function (done) {
+                    Blockfolio.getPrice("ETH").then((cPrice) => {
+                        expect(cPrice).to.be.a("number");
+                        return done();
+                    }).catch((err) => { return done(err); });
+                });
+
                 it("Get the last price of AEON on this exchange", function (done) {
                     Blockfolio.getPrice("AEON/BTC", {
                         exchange: "bittrex"
@@ -302,7 +309,7 @@
                 });
                 it("Add another BTC position on this pair (sell)", function (done) {
                     Blockfolio.addPosition("AEON/BTC", {
-                        type: "sell",
+                        mode: "sell",
                         exchange: "bittrex",
                         price: 0.00018,
                         amount: 10,
@@ -406,6 +413,29 @@
                 it("Add an alert when LTC/EUR crosses 200", function (done) {
                     Blockfolio.addAlert("LTC/EUR", {
                         above: 200
+                    }).then(() => {
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
+
+                it("Add an alert when BTC/EUR crosses 20000 on Coinbase", function (done) {
+                    Blockfolio.addAlert("BTC/EUR", {
+                        above: 20000,
+                        exchange: "Coinbase"
+                    }).then(() => {
+                        return done();
+                    }).catch((err) => {
+                        return done(err);
+                    });
+                });
+
+                it("Add an alert when ETH/EUR crosses 2000 on Bittrex with persistence", function (done) {
+                    Blockfolio.addAlert("ETH/EUR", {
+                        above: 2000,
+                        exchange: "bittrex",
+                        persistent: true
                     }).then(() => {
                         return done();
                     }).catch((err) => {
