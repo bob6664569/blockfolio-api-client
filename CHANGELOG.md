@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.0.0] - 2018-05-21
+### Changed
+- Simplify callbacks & error handling
+
 ## [1.0.0-beta7] - 2018-05-13
 ### Added
 - Full code coverage

@@ -27,7 +27,7 @@ Installation
 ------------
 
 ```sh
-npm install blockfolio-api-client@beta --save
+npm install blockfolio-api-client --save
 ```
 
 Usage
