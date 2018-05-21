@@ -1,8 +1,57 @@
 # Changelog
 
 ## [Unreleased]
-- Options object for parameters passing on most endpoints
-- Default values & some automation on portfolio positions
+
+## [1.0.1] - 2018-05-21
+### Removed
+- useless watchCoin method (redundant with addPosition)
+
+## [1.0.0] - 2018-05-21
+### Changed
+- Simplify callbacks & error handling
+
+## [1.0.0-beta7] - 2018-05-13
+### Added
+- Full code coverage
+
+## [1.0.0-beta6] - 2018-05-12
+### Added
+- Rate limitation to avoid API issues
+### Fixed
+- getPositions now taking an optional pair in first param like described in README
+
+## [1.0.0-beta5] - 2018-05-12
+### Fixed
+- _validateTokenPair now valides with the full coins list
+
+## [1.0.0-beta4] - 2018-05-10
+### Added
+- pauseAlert, startAlert, pauseAllAlerts, startAllAlerts
+- How to downgrade Blockfolio to get your DEVICE_TOKEN
+### Changed
+- reordering tests
+- documentation for v1.0.0
+
+## [1.0.0-beta3] - 2018-05-09
+### Added
+- getAlerts, addAlert, removeAlert
+- Some checks for arguments on other methods
+
+## [1.0.0-beta2] - 2018-05-05
+### Added
+- getPortfolioSummary
+- more examples in the README
+- enhanced coverage
+### Changed
+- Promises everywhere
+
+## [1.0.0-beta1] - 2018-05-04
+### Added
+- Every asynchronous method now returns a promise, callbacks are optional
+- removePosition
+### Changed
+- Callbacks are now optional
+- Promisified methods now takes fewer arguments, and use an option object for optional settings
 
 ## [0.2.5] - 2018-05-04
 ### Fixed

@@ -1,6 +1,6 @@
 {
   "name": "blockfolio-api-client",
-  "version": "0.2.5",
+  "version": "1.0.1",
   "description": "JavaScript module to access Blockfolio API",
   "main": "index.js",
   "scripts": {
@@ -31,10 +31,12 @@
   "homepage": "https://github.com/bob6664569/blockfolio-api-client#readme",
   "devDependencies": {
     "chai": "^4.1.2",
+    "chai-match": "^1.1.1",
     "istanbul": "^0.4.5",
     "mocha": "^5.1.1"
   },
   "dependencies": {
+    "limiter": "^1.1.3",
     "request": "^2.85.0"
   },
   "readmeFilename": "README.md"
