@@ -149,7 +149,6 @@ Documentation
   - [getPositions](#getpositionspair-callback): Get information about your positions
   - [addPosition](#addpositionpair-options-callback): Add a position (many possibilities)
   - [removePosition](#removepositionpositionid-callback): Remove a specific position
-  - [watchCoin](#watchcoinpair-options-callback): Just add a pair to watch on your portfolio
   - [removeCoin](#removecoinpair-callback): Remove completely a pair from your list
   - [getHoldings](#getholdingspair-callback): Get holdings info for a specific coin
 - **Exchanges & Markets**
@@ -274,25 +273,6 @@ Add a new position to your portfolio.
 ```javascript
 Blockfolio.removePosition(42).then((() => {
     console.log("Your position #42 has been successfuly removed!"
-}).catch((err) => { console.error(err); });
-```
-
-#### watchCoin(pair\[, options, callback\])
-
-##### Synopsis
-
-Add a coin to your portfolio without adding any position
-
-##### Arguments
-
-- **pair** (String) : Token pair of the coin to watch (ie. `"XMR/BTC"`)
-- **options** : if no option is provided, then the coin is just added to the watchlist on the top exchange
-  - **exchange** (String - default to the top exchange) : Name of the exchange where the order is executed (see [`getExchanges`](#getexchangespair-callback) to get the list of available exchanges for a specific token pair)
-
-##### Example
-```javascript
-Blockfolio.watchCoin("XMR/BTC", { exchange: "bittrex" }).then(() => {
-    // XMR from Bittrex added to your portfolio !
 }).catch((err) => { console.error(err); });
 ```
 

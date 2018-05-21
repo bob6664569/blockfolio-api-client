@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.0.1] - 2018-05-21
+### Removed
+- useless watchCoin method (redundant with addPosition)
+
 ## [1.0.0] - 2018-05-21
 ### Changed
 - Simplify callbacks & error handling

@@ -365,29 +365,20 @@
                 });
 
                 it("Add a token pair to watch from Bittrex", function (done) {
-                    Blockfolio.watchCoin("AEON/BTC", "bittrex", (err) => {
+                    Blockfolio.addPosition("AEON/BTC", {exchange: "bittrex"}, (err) => {
                         if (err) return done(err);
                         return done();
                     });
                 });
 
                 it("Watch LTC/BTC from the top exchange", function (done) {
-                    Blockfolio.watchCoin("LTC/BTC").then(() => {
+                    Blockfolio.addPosition("LTC/BTC").then(() => {
                         return done();
                     }).catch((err) => {
                         return done(err);
                     });
                 });
 
-                it("... should works with a promise too", function (done) {
-                    Blockfolio.watchCoin("AEON/BTC", {
-                        exchange: "bittrex"
-                    }).then(() => {
-                        return done();
-                    }).catch((err) => {
-                        return done(err);
-                    });
-                });
                 it("addPosition should fail when no parameter is passed", function (done) {
                     Blockfolio.addPosition().then(() => {
                         return done(new Error("Should not go here with no pair!"));
