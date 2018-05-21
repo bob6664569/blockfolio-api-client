@@ -3,13 +3,13 @@
 
     'use strict';
 
-    const   chai            = require("chai"),
-            should          = chai.should(),
-            expect          = chai.expect;
+    const chai = require("chai"),
+        should = chai.should(),
+        expect = chai.expect;
 
-    const   Blockfolio      = require("../index");
+    const Blockfolio = require("../index");
 
-    const   FAKE_TOKEN      = "1915f3d2ef313e86";
+    const FAKE_TOKEN = "1915f3d2ef313e86";
 
     // Enable regexps for chai
     chai.use(require('chai-match'));
@@ -134,32 +134,32 @@
             });
             it("should convert properly XRP/BTC to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("XRP/BTC");
-                expect(pair).to.be.deep.equal({base: "BTC", token: "XRP"});
+                expect(pair).to.be.deep.equal({ base: "BTC", token: "XRP" });
                 return done();
             });
             it("should convert properly BTC/USD to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC/USD");
-                expect(pair).to.be.deep.equal({base: "USD", token: "BTC"});
+                expect(pair).to.be.deep.equal({ base: "USD", token: "BTC" });
                 return done();
             });
             it("should convert properly AEON to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("AEON");
-                expect(pair).to.be.deep.equal({base: "BTC", token: "AEON"});
+                expect(pair).to.be.deep.equal({ base: "BTC", token: "AEON" });
                 return done();
             });
             it("should convert properly BTC-LTC to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC-LTC");
-                expect(pair).to.be.deep.equal({base: "BTC", token: "LTC"});
+                expect(pair).to.be.deep.equal({ base: "BTC", token: "LTC" });
                 return done();
             });
             it("should convert properly BTC-DASH to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC-DASH");
-                expect(pair).to.be.deep.equal({base: "BTC", token: "DASH"});
+                expect(pair).to.be.deep.equal({ base: "BTC", token: "DASH" });
                 return done();
             });
             it("should convert properly BTC-BCH to a pair struct", function (done) {
                 const pair = Blockfolio.utils.parseToken("BTC-BCH");
-                expect(pair).to.be.deep.equal({base: "BTC", token: "BCH"});
+                expect(pair).to.be.deep.equal({ base: "BTC", token: "BCH" });
                 return done();
             });
         });
@@ -294,7 +294,7 @@
                 });
             });
             describe("Positions", function () {
-
+              
                 it("Add a BTC position on this pair (buy)", function (done) {
                     Blockfolio.addPosition("AEON/BTC", {
                         exchange: "bittrex",

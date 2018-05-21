@@ -53,6 +53,10 @@
 - Callbacks are now optional
 - Promisified methods now takes fewer arguments, and use an option object for optional settings
 
+## [0.2.5] - 2018-05-04
+### Fixed
+- sell mode for addPosition
+
 ## [0.2.4] - 2018-05-03
 ### Added
 - token check displaying an hint if the used token is a disposable one
