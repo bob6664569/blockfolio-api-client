@@ -1,6 +1,6 @@
 # blockfolio-api-client
 
-[![Package Quality](http://npm.packagequality.com/badge/blockfolio-api-client.png)](http://packagequality.com/#?package=blockfolio-api-client)
+[![Package Quality](http://npm.packagequality.com/shield/blockfolio-api-client.svg)](http://packagequality.com/#?package=blockfolio-api-client)
 [![Build Status](https://scrutinizer-ci.com/g/bob6664569/blockfolio-api-client/badges/build.png?b=master)](https://scrutinizer-ci.com/g/bob6664569/blockfolio-api-client/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bob6664569/blockfolio-api-client/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bob6664569/blockfolio-api-client/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/bob6664569/blockfolio-api-client/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/bob6664569/blockfolio-api-client/?branch=master)
