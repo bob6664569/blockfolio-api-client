@@ -32,14 +32,6 @@
                     return done();
                 });
             });
-            it("Get the announcements from SIGNAL", function (done) {
-                Blockfolio.getAnnouncements((err, announcements) => {
-                    if (err) { return done(err); }
-                    should.exist(announcements);
-                    expect(announcements).to.be.an("array");
-                    return done();
-                });
-            });
             it("should fail at registering an already activated DEVICE_TOKEN", function (done) {
                 Blockfolio._register(FAKE_TOKEN, (err, response) => {
                     should.exist(err.message);
